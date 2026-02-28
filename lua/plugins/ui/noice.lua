@@ -52,22 +52,39 @@ return {
       -- Icons for completion item kinds (see defaults at noice.config.icons.kinds)
       kind_icons = {}, -- set to `false` to disable icons
     },
+    commands = {
+      history = {
+        -- options for the message history that you get with `:Noice`
+        view = 'split',
+        opts = { enter = true, format = 'details' },
+        filter = {
+          any = {
+            { event = 'notify' },
+            { error = true },
+            { warning = true },
+            { event = 'msg_show', kind = { '' } },
+            { event = 'lsp', kind = 'message' },
+          },
+        },
+      },
+    },
+    notify = {
+      -- Noice can be used as `vim.notify` so you can route any notification like other messages
+      -- Notification messages have their level and other properties set.
+      -- event is always "notify" and kind can be any log level as a string
+      -- The default routes will forward notifications to nvim-notify
+      -- Benefit of using Noice for this is the routing and consistent history view
+      enabled = true,
+      view = 'notify',
+    },
   },
-  notify = {
-    -- Noice can be used as `vim.notify` so you can route any notification like other messages
-    -- Notification messages have their level and other properties set.
-    -- event is always "notify" and kind can be any log level as a string
-    -- The default routes will forward notifications to nvim-notify
-    -- Benefit of using Noice for this is the routing and consistent history view
-    enabled = true,
-    view = 'notify',
-  },
+
 -- stylua: ignore
   keys = {
     { "<leader>sn", "", desc = "+noice"},
     { "<S-Enter>", function() require("noice").redirect(vim.fn.getcmdline()) end, mode = "c", desc = "Redirect Cmdline" },
     { "<leader>snl", function() require("noice").cmd("last") end, desc = "Noice Last Message" },
-    { "<leader>n", function() require("noice").cmd("history") end, desc = "Noice History" },
+    { "<leader>n",'<cmd>NoiceSnacks<cr>', desc = "Noice History" },
     { "<leader>sna", function() require("noice").cmd("all") end, desc = "Noice All" },
     { "<leader>snd", function() require("noice").cmd("dismiss") end, desc = "Dismiss All" },
     { "<leader>snt", function() require("noice").cmd("pick") end, desc = "Noice Picker (Telescope/FzfLua)" },
