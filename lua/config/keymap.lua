@@ -3,12 +3,6 @@
 local map = Snacks.keymap.set
 -- Clear highlights on search when pressing <Esc> in normal mode
 
--- Set <space> as the leader key
--- See `:help mapleader`
---  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
-
 --  See `:help hlsearch`
 map('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
