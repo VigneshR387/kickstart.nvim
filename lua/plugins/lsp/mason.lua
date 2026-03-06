@@ -6,12 +6,19 @@ return {
       'WhoIsSethDaniel/mason-tool-installer.nvim',
       opts = {
         ensure_installed = {
+          -- Servers
           'lua_ls',
-          'stylua',
+          'json-lsp',
+          'yaml-language-server',
+          -- linters
           'eslint_d',
           'biome',
           'pylint',
-          'markdownlint',
+          -- Formatter
+          'prettierd',
+          'markdownlint-cli2',
+          'shfmt',
+          'stylua',
         },
       },
     },
