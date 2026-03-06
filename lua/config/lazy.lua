@@ -11,7 +11,7 @@
 --  [3] = { import = "plugins.editor" },
 --  [4] = { import = "plugins.formatting" },
 -- }
-local groups = { 'coding', 'colorscheme', 'editor', 'formatting', 'lsp', 'ui', 'util', 'treesitter' }
+local groups = { 'coding', 'colorscheme', 'editor', 'formatting', 'lsp', 'lint', 'ui', 'util', 'treesitter' }
 local plugins = {
   { import = 'plugins' },
 }
