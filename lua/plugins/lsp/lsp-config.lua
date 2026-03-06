@@ -146,10 +146,37 @@ return {
     --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
     --  See `:help lsp-config` for information about keys and how to configure
     local servers = {
+      jsonls = {
+        -- lazy-load schemastore when needed
+        before_init = function(_, new_config)
+          new_config.settings.json.schemas = new_config.settings.json.schemas or {}
+          vim.list_extend(new_config.settings.json.schemas, require('schemastore').json.schemas())
+        end,
+        settings = {
+          json = {
+            format = {
+              enable = true,
+            },
+            validate = { enable = true },
+          },
+        },
+      },
+      yamlls = {
+        settings = {
+          yaml = {
+            schemaStore = {
+              enable = false,
+              url = '',
+            },
+            schemas = require('schemastore').yaml.schemas(),
+          },
+        },
+      },
       -- clangd = {},
       -- gopls = {},
       -- pyright = {},
       -- rust_analyzer = {},
+
       --
       -- Some languages (like typescript) have entire language plugins that can be useful:
       --    https://github.com/pmizio/typescript-tools.nvim
