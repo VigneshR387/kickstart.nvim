@@ -6,7 +6,7 @@ return {
 
     -- Define linters for specific file types (example for markdown and Python)
     lint.linters_by_ft = {
-      markdown = { 'markdownlint' }, -- Requires markdownlint to be installed on your system
+      markdown = { 'markdownlint-cli2' }, -- Requires markdownlint to be installed on your system
       python = { 'pylint' }, -- Requires pylint to be installed on your system
       -- Add more file types and linters as needed
     }
@@ -18,6 +18,6 @@ return {
     })
 
     -- Optional: set a keymap to manually trigger linting
-    vim.keymap.set('n', '<leader>l', function() lint.try_lint() end, { desc = 'Trigger linting for current file' })
+    vim.keymap.set('n', '<leader>L', function() lint.try_lint() end, { desc = 'Trigger linting for current file' })
   end,
 }
