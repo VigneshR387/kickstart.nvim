@@ -1,0 +1,80 @@
+---@class snacks.Config
+---@field animate? snacks.animate.Config
+---@field bigfile? snacks.bigfile.Config
+---@field dashboard? snacks.dashboard.Config
+---@field dim? snacks.dim.Config
+---@field explorer? snacks.explorer.Config
+---@field gh? snacks.gh.Config
+---@field gitbrowse? snacks.gitbrowse.Config
+---@field image? snacks.image.Config
+---@field indent? snacks.indent.Config
+---@field input? snacks.input.Config
+---@field layout? snacks.layout.Config
+---@field lazygit? snacks.lazygit.Config
+---@field notifier? snacks.notifier.Config
+---@field picker? snacks.picker.Config
+---@field profiler? snacks.profiler.Config
+---@field quickfile? snacks.quickfile.Config
+---@field scope? snacks.scope.Config
+---@field scratch? snacks.scratch.Config
+---@field scroll? snacks.scroll.Config
+---@field statuscolumn? snacks.statuscolumn.Config
+---@field terminal? snacks.terminal.Config
+---@field toggle? snacks.toggle.Config
+---@field win? snacks.win.Config
+---@field words? snacks.words.Config
+---@field zen? snacks.zen.Config
+---@field styles? table<string, snacks.win.Config>
+---@field image? snacks.image.Config|{}
+---@type snacks.terminal.Config
+---@field win? snacks.win.Config|{}
+---@field shell? string|string[] The shell to use. Defaults to `vim.o.shell`
+---@field override? fun(cmd?: string|string[], opts?: snacks.terminal.Opts) Use this to use a different terminal implementation
+---@class snacks.terminal.Opts: snacks.terminal.Config
+---@field cwd? string
+---@field count? integer
+---@field env? table<string, string>
+---@field start_insert? boolean start insert mode when starting the terminal
+---@field auto_insert? boolean start insert mode when entering the terminal buffer
+---@field auto_close? boolean close the terminal buffer when the process exits
+---@field interactive? boolean shortcut for `start_insert`, `auto_close` and `auto_insert` (default: true)
+
+---@class snacks.win.Config: vim.api.keyset.win_config
+---@field style? string merges with config from `Snacks.config.styles[style]`
+---@field show? boolean Show the window immediately (default: true)
+---@field footer_keys? boolean|string[] Show keys footer. When string[], only show those keys with lhs (default: false)
+---@field height? number|fun(self:snacks.win):number Height of the window. Use <1 for relative height. 0 means full height. (default: 0.9)
+---@field width? number|fun(self:snacks.win):number Width of the window. Use <1 for relative width. 0 means full width. (default: 0.9)
+---@field min_height? number Minimum height of the window
+---@field max_height? number Maximum height of the window
+---@field min_width? number Minimum width of the window
+---@field max_width? number Maximum width of the window
+---@field col? number|fun(self:snacks.win):number Column of the window. Use <1 for relative column. (default: center)
+---@field row? number|fun(self:snacks.win):number Row of the window. Use <1 for relative row. (default: center)
+---@field minimal? boolean Disable a bunch of options to make the window minimal (default: true)
+---@field position? "float"|"bottom"|"top"|"left"|"right"|"current"
+---@field border? "none"|"top"|"right"|"bottom"|"left"|"top_bottom"|"hpad"|"vpad"|"rounded"|"single"|"double"|"solid"|"shadow"|"bold"|string[]|false|true
+---@field buf? number If set, use this buffer instead of creating a new one
+---@field file? string If set, use this file instead of creating a new buffer
+---@field enter? boolean Enter the window after opening (default: false)
+---@field backdrop? number|false|snacks.win.Backdrop Opacity of the backdrop (default: 60)
+---@field wo? vim.wo|{} window options
+---@field bo? vim.bo|{} buffer options
+---@field b? table<string, any> buffer local variables
+---@field w? table<string, any> window local variables
+---@field ft? string filetype to use for treesitter/syntax highlighting. Won't override existing filetype
+---@field scratch_ft? string filetype to use for scratch buffers
+---@field keys? table<string, false|string|fun(self: snacks.win)|snacks.win.Keys> Key mappings
+---@field on_buf? fun(self: snacks.win) Callback after opening the buffer
+---@field on_win? fun(self: snacks.win) Callback after opening the window
+---@field on_close? fun(self: snacks.win) Callback after closing the window
+---@field fixbuf? boolean don't allow other buffers to be opened in this window
+---@field text? string|string[]|fun():(string[]|string) Initial lines to set in the buffer
+---@field actions? table<string, snacks.win.Action.spec> Actions that can be used in key mappings
+---@field resize? boolean Automatically resize the window when the editor is resized
+---@field stack? boolean When enabled, multiple split windows with the same position will be stacked together (useful for terminals)
+
+---@class snacks.words.Config
+---@field enabled? boolean
+---@param count? number
+---@param cycle? boolean
