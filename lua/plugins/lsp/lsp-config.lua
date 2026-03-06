@@ -18,134 +18,11 @@ return {
     -- Allows extra capabilities provided by blink.cmp
     'saghen/blink.cmp',
   },
-  config = function()
-    -- Brief aside: **What is LSP?**
-    --
-    -- LSP is an initialism you've probably heard, but might not understand what it is.
-    --
-    -- LSP stands for Language Server Protocol. It's a protocol that helps editors
-    -- and language tooling communicate in a standardized fashion.
-    --
-    -- In general, you have a "server" which is some tool built to understand a particular
-    -- language (such as `gopls`, `lua_ls`, `rust_analyzer`, etc.). These Language Servers
-    -- (sometimes called LSP servers, but that's kind of like ATM Machine) are standalone
-    -- processes that communicate with some "client" - in this case, Neovim!
-    --
-    -- LSP provides Neovim with features like:
-    --  - Go to definition
-    --  - Find references
-    --  - Autocompletion
-    --  - Symbol Search
-    --  - and more!
-    --
-    -- Thus, Language Servers are external tools that must be installed separately from
-    -- Neovim. This is where `mason` and related plugins come into play.
-    --
-    -- If you're wondering about lsp vs treesitter, you can check out the wonderfully
-    -- and elegantly composed help section, `:help lsp-vs-treesitter`
-
-    --  This function gets run when an LSP attaches to a particular buffer.
-    --    That is to say, every time a new file is opened that is associated with
-    --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
-    --    function will be executed to configure the current buffer
-    vim.api.nvim_create_autocmd('LspAttach', {
-      group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
-      callback = function(event)
-        -- NOTE: Remember that Lua is a real programming language, and as such it is possible
-        -- to define small helper and utility functions so you don't have to repeat yourself.
-        --
-        -- In this case, we create a function that lets us more easily define mappings specific
-        -- for LSP related items. It sets the mode, buffer and description for us each time.
-        local map = function(keys, func, desc, mode)
-          mode = mode or 'n'
-          vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
-        end
-        local client = vim.lsp.get_client_by_id(event.data.client_id)
-        -- Rename the variable under your cursor.
-        --  Most Language Servers support renaming across files, etc.
-        map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
-
-        -- Execute a code action, usually your cursor needs to be on top of an error
-        -- or a suggestion from your LSP for this to activate.
-        map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
-
-        -- WARN: This is not Goto Definition, this is Goto Declaration.
-        --  For example, in C this would take you to the header.
-        map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-
-        -- my declared keymaps
-        map('<leader>cl', function() Snacks.picker.lsp_config() end, 'Lsp Info')
-        map('<leader>ca', vim.lsp.buf.code_action, 'Code Action', { 'n', 'x' })
-        map('<leader>cc', vim.lsp.codelens.run, 'Run Codelens', { 'n', 'x' })
-        map('<leader>cC', vim.lsp.codelens.refresh, 'Refresh & Display Codelens', { 'n' })
-        map('<leader>cR', function() Snacks.rename.rename_file() end, 'Rename File', 'n')
-        map('<leader>cr', vim.lsp.buf.rename, 'Rename')
-        -- The following two autocommands are used to highlight references of the
-        -- word under your cursor when your cursor rests there for a little while.
-        --    See `:help CursorHold` for information about when this is executed
-        --
-        -- When you move your cursor, the highlights will be cleared (the second autocommand).
-
-        if client and client:supports_method('textDocument/documentHighlight', event.buf) then
-          -- NOTE: The following 2 autocommands is causing some problems with Snacks.word.jump. So this autocmd is
-          -- commented out for now .
-
-          -- local highlight_augroup = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
-          -- vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-          --   buffer = event.buf,
-          --   group = highlight_augroup,
-          --   callback = vim.lsp.buf.document_highlight,
-          -- })
-
-          -- vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-          --   buffer = event.buf,
-          --   group = highlight_augroup,
-          --   callback = vim.lsp.buf.clear_references,
-          -- })
-
-          -- vim.api.nvim_create_autocmd('LspDetach', {
-          --   group = vim.api.nvim_create_augroup('kickstart-lsp-detach', { clear = true }),
-          --   callback = function(event2)
-          --     vim.lsp.buf.clear_references()
-          --     vim.api.nvim_clear_autocmds { group = 'kickstart-lsp-highlight', buffer = event2.buf }
-          --   end,
-          -- })
-          map(']]', function() Snacks.words.jump(vim.v.count1) end, 'Next Reference')
-          map('[[', function() Snacks.words.jump(-vim.v.count1) end, 'Prev Reference')
-          map('<a-n>', function() Snacks.words.jump(vim.v.count1, true) end, 'Next Reference')
-          map('<a-p>', function() Snacks.words.jump(-vim.v.count1, true) end, 'Prev Reference')
-
-          -- FIX: Using Snacks.words to handle the autocommands instead.
-          if not Snacks.words.is_enabled(event.buf) then Snacks.words.enable(event.buf) end
-        end
-
-        -- The following code creates a keymap to toggle inlay hints in your
-        -- code, if the language server you are using supports them
-        --
-        -- This may be unwanted, since they displace some of your code
-        if client and client:supports_method('textDocument/inlayHint', event.buf) then
-          map('<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }) end, '[T]oggle Inlay [H]ints')
-        end
-      end,
-    })
-    local snacks_words_group = vim.api.nvim_create_augroup('snacks-words', { clear = true })
-    -- disable Snacks.words when lsp detachs
-
-    vim.api.nvim_create_autocmd('LspDetach', {
-      group = snacks_words_group,
-      callback = function(event) Snacks.words.disable(event.buf) end,
-    })
-
-    -- LSP servers and clients are able to communicate to each other what features they support.
-    --  By default, Neovim doesn't support everything that is in the LSP specification.
-    --  When you add blink.cmp, luasnip, etc. Neovim now has *more* capabilities.
-    --  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
-    local capabilities = require('blink.cmp').get_lsp_capabilities()
-
+  opts = {
     -- Enable the following language servers
     --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
     --  See `:help lsp-config` for information about keys and how to configure
-    local servers = {
+    servers = {
       jsonls = {
         -- lazy-load schemastore when needed
         before_init = function(_, new_config)
@@ -183,14 +60,56 @@ return {
       --
       -- But for many setups, the LSP (`ts_ls`) will work just fine
       -- ts_ls = {},
-    }
+    },
+  },
+  config = function(_, opts)
+    -- Brief aside: **What is LSP?**
+    --
+    -- LSP is an initialism you've probably heard, but might not understand what it is.
+    --
+    -- LSP stands for Language Server Protocol. It's a protocol that helps editors
+    -- and language tooling communicate in a standardized fashion.
+    --
+    -- In general, you have a "server" which is some tool built to understand a particular
+    -- language (such as `gopls`, `lua_ls`, `rust_analyzer`, etc.). These Language Servers
+    -- (sometimes called LSP servers, but that's kind of like ATM Machine) are standalone
+    -- processes that communicate with some "client" - in this case, Neovim!
+    --
+    -- LSP provides Neovim with features like:
+    --  - Go to definition
+    --  - Find references
+    --  - Autocompletion
+    --  - Symbol Search
+    --  - and more!
+    --
+    -- Thus, Language Servers are external tools that must be installed separately from
+    -- Neovim. This is where `mason` and related plugins come into play.
+    --
+    -- If you're wondering about lsp vs treesitter, you can check out the wonderfully
+    -- and elegantly composed help section, `:help lsp-vs-treesitter`
+
+    local snacks_words_group = vim.api.nvim_create_augroup('snacks-words', { clear = true })
+    -- disable Snacks.words when lsp detachs
+
+    vim.api.nvim_create_autocmd('LspDetach', {
+      group = snacks_words_group,
+      callback = function(event) Snacks.words.disable(event.buf) end,
+    })
+
+    -- LSP servers and clients are able to communicate to each other what features they support.
+    --  By default, Neovim doesn't support everything that is in the LSP specification.
+    --  When you add blink.cmp, luasnip, etc. Neovim now has *more* capabilities.
+    --  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
+    local capabilities = require('blink.cmp').get_lsp_capabilities()
+
+    local servers = opts.servers or {}
 
     for name, server in pairs(servers) do
       server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+
       vim.lsp.config(name, server)
       vim.lsp.enable(name)
     end
-
     -- Special Lua Config, as recommended by neovim help docs
     vim.lsp.config('lua_ls', {
       capabilities = capabilities,
