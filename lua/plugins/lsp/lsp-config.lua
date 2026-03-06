@@ -23,6 +23,8 @@ return {
     --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
     --  See `:help lsp-config` for information about keys and how to configure
     servers = {
+
+      -- Special Lua Config, as recommended by neovim help docs
       lua_ls = {
         on_init = function(client)
           if client.workspace_folders then
@@ -37,11 +39,15 @@ return {
             },
             workspace = {
               checkThirdParty = false,
-              library = vim.api.nvim_get_runtime_file('', true),
+              -- NOTE: this is a lot slower and will cause issues when working on your own configuration.
+              --  See https://github.com/neovim/nvim-lspconfig/issues/3189
+              library = vim.tbl_extend('force', vim.api.nvim_get_runtime_file('', true), {
+                '${3rd}/luv/library',
+                '${3rd}/busted/library',
+              }),
             },
           })
         end,
-
         settings = {
           Lua = {},
         },
@@ -72,6 +78,9 @@ return {
           },
         },
       },
+
+      bashls = {},
+      stylua = {},
       -- clangd = {},
       -- gopls = {},
       -- pyright = {},
@@ -86,28 +95,6 @@ return {
     },
   },
   config = function(_, opts)
-    -- Brief aside: **What is LSP?**
-    --
-    -- LSP is an initialism you've probably heard, but might not understand what it is.
-    --
-    -- LSP stands for Language Server Protocol. It's a protocol that helps editors
-    -- and language tooling communicate in a standardized fashion.
-    --
-    -- In general, you have a "server" which is some tool built to understand a particular
-    -- language (such as `gopls`, `lua_ls`, `rust_analyzer`, etc.). These Language Servers
-    -- (sometimes called LSP servers, but that's kind of like ATM Machine) are standalone
-    -- processes that communicate with some "client" - in this case, Neovim!
-    --
-    -- LSP provides Neovim with features like:
-    --  - Go to definition
-    --  - Find references
-    --  - Autocompletion
-    --  - Symbol Search
-    --  - and more!
-    --
-    -- Thus, Language Servers are external tools that must be installed separately from
-    -- Neovim. This is where `mason` and related plugins come into play.
-    --
     -- If you're wondering about lsp vs treesitter, you can check out the wonderfully
     -- and elegantly composed help section, `:help lsp-vs-treesitter`
 
@@ -119,17 +106,9 @@ return {
       callback = function(event) Snacks.words.disable(event.buf) end,
     })
 
-    -- LSP servers and clients are able to communicate to each other what features they support.
-    --  By default, Neovim doesn't support everything that is in the LSP specification.
-    --  When you add blink.cmp, luasnip, etc. Neovim now has *more* capabilities.
-    --  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
-    local capabilities = require('blink.cmp').get_lsp_capabilities()
-
     local servers = opts.servers or {}
 
     for name, server in pairs(servers) do
-      server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-
       vim.lsp.config(name, server)
       vim.lsp.enable(name)
     end
