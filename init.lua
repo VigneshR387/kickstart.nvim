@@ -18,5 +18,9 @@ end
 require 'config.globals'
 require 'config.options'
 require 'config.lazy'
+
+-- after lazy.nvim is ready
+_G.Util = require 'util'
+
 require 'config.autocmd'
 require 'config.keymap'
