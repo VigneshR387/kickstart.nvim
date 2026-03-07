@@ -90,6 +90,7 @@ return {
     { "<leader>snt", function() require("noice").cmd("pick") end, desc = "Noice Picker (Telescope/FzfLua)" },
     { "<c-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll Forward", mode = {"i", "n", "s"} },
     { "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll Backward", mode = {"i", "n", "s"}},
+    {"<leader>un", "<cmd>Noice dismiss<CR>",mode = {'v','n'},desc= "Dismiss All Noitifications"},
   },
   config = function(_, opts)
     -- HACK: noice shows messages from before it was enabled,
