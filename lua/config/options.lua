@@ -93,7 +93,8 @@ vim.diagnostic.config {
 -- Set to `false` to globally disable all snacks animations
 vim.g.snacks_animate = true
 
-opt.wrap = false -- Disable line wrap
+opt.wrap = true -- Disable line wrap
 
+opt.foldlevel = 99
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
