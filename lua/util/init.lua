@@ -24,12 +24,20 @@ setmetatable(M, {
     -- Example:
     -- Util.cmp → require("util.cmp")
     ---@diagnostic disable-next-line: no-unknown
-    t[k] = require('util.' .. k)
+    local mod = require('util.' .. k)
+
+    -- run setup automatically if the module defines it
+    if type(mod) == 'table' and type(mod.setup) == 'function' and not mod._setup_done then
+      mod._setup_done = true
+      mod.setup()
+    end
+
+    t[k] = mod
 
     -- decorate the loaded module for deprecated handling
-    M.deprecated.decorate(k, t[k])
+    M.deprecated.decorate(k, mod)
 
-    return t[k]
+    return mod
   end,
 })
 
