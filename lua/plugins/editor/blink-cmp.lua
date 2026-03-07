@@ -57,6 +57,8 @@ return { -- Autocompletion
       ['<S-Tab>'] = { 'select_prev', 'fallback' },
       ['<Tab>'] = { 'select_next', 'fallback' },
 
+      ['<Up>'] = false,
+      ['<Down>'] = false,
       -- disable a keymap from the preset
       ['<C-e>'] = false, -- or {}
 
