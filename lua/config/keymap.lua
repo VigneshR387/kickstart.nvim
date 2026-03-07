@@ -137,7 +137,8 @@ map('i', '.', '.<c-g>u')
 map('i', ';', ';<c-g>u')
 
 -- toggle options
-
+Util.format.snacks_toggle():map '<leader>uf'
+Util.format.snacks_toggle(true):map '<leader>uF'
 Snacks.toggle.option('spell', { name = 'Spelling' }):map '<leader>us'
 Snacks.toggle.option('wrap', { name = 'Wrap' }):map '<leader>uw'
 Snacks.toggle.option('relativenumber', { name = 'Relative Number' }):map '<leader>uL'
