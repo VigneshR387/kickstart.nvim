@@ -183,6 +183,12 @@ map('n', '<leader>xl', function()
   if not success and err then vim.notify(err, vim.log.levels.ERROR) end
 end, { desc = 'Location List' })
 
+-- quickfix list
+map('n', '<leader>xq', function()
+  local success, err = pcall(vim.fn.getqflist({ winid = 0 }).winid ~= 0 and vim.cmd.cclose or vim.cmd.copen)
+  if not success and err then vim.notify(err, vim.log.levels.ERROR) end
+end, { desc = 'Quickfix List' })
+
 -- diagnostic
 local diagnostic_goto = function(next, severity)
   return function()
@@ -200,3 +206,7 @@ map('n', ']e', diagnostic_goto(true, 'ERROR'), { desc = 'Next Error' })
 map('n', '[e', diagnostic_goto(false, 'ERROR'), { desc = 'Prev Error' })
 map('n', ']w', diagnostic_goto(true, 'WARN'), { desc = 'Next Warning' })
 map('n', '[w', diagnostic_goto(false, 'WARN'), { desc = 'Prev Warning' })
+
+-- better new line
+map('n', 'o', 'o<Esc>', { desc = 'New line below without insert' })
+map('n', 'O', 'O<Esc>', { desc = 'New line above without insert' })
