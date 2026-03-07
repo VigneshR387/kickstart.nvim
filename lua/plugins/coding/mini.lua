@@ -29,9 +29,7 @@ return {
       },
     }
     -- LUA: lua only accepts positional args and single table inside a function call eg:require('lua').setup(<only pos args & single table>)
-    require('mini.pairs').setup {
-      modes = { insert = true, command = false, terminal = false },
-    }
+
     -- Allow auto pairing for special characters like '{',''','"' etc.
     require('mini.icons').setup {
 
