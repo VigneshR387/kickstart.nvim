@@ -12,7 +12,7 @@ return {
     -- Define linters for specific file types (example for markdown and Python)
     lint.linters_by_ft = {
       markdown = { 'markdownlint-cli2' }, -- Requires markdownlint to be installed on your system
-      python = { 'pylint' }, -- Requires pylint to be installed on your system
+      python = { 'ruff' },
       sh = { 'shellcheck' },
       bash = { 'shellcheck' },
       -- Add more file types and linters as needed
