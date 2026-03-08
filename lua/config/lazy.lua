@@ -11,6 +11,7 @@
 --  [3] = { import = "plugins.editor" },
 --  [4] = { import = "plugins.formatting" },
 -- }
+
 local groups = { 'coding', 'colorscheme', 'editor', 'formatting', 'lsp', 'lint', 'ui', 'util', 'treesitter' }
 local plugins = {
   { import = 'plugins' },
@@ -19,7 +20,6 @@ for i, name in ipairs(groups) do
   table.insert(plugins, { import = 'plugins.' .. name })
 end
 
-local group = { 'ui', 'editor', 'formatting' }
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
@@ -31,7 +31,12 @@ end
 local rtp = vim.opt.rtp
 rtp:prepend(lazypath)
 
-require('util.plugin').lazy_file()
+-- after lazy.nvim is ready
+_G.Util = require 'util'
+
+-- load the helper modules from util.plugin
+require 'util.plugin'
+
 -- Setup lazy.nvim
 require('lazy').setup {
   spec = plugins,
