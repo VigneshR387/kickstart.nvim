@@ -33,7 +33,7 @@ return {
     { '[B', '<Cmd>BufferMovePrevious<CR>', desc = 'Move Buffer Prev' },
     { ']B', '<Cmd>BufferMoveNext<CR>', desc = 'Move Buffer Next' },
 
-    { '<leader>bc', '<Cmd>BufferClose<CR>', desc = 'Close Buffer' },
+    { '<leader>bd', '<Cmd>BufferClose<CR>', desc = 'Close Buffer' },
     { '<leader>bo', '<Cmd>BufferCloseAllButCurrent<CR>', desc = 'Close Other Buffers' },
 
     { '<leader>bj', '<Cmd>BufferPick<CR>', desc = 'Pick Buffer' },
