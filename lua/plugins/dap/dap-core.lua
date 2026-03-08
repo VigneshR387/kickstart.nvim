@@ -58,22 +58,10 @@ return {
       if Util.has 'mason-nvim-dap.nvim' then require('mason-nvim-dap').setup(Util.opts 'mason-nvim-dap.nvim') end
 
       vim.api.nvim_set_hl(0, 'DapStoppedLine', { default = true, link = 'Visual' })
-      local dap_icons = {
-        Stopped = { '󰁕 ', 'DiagnosticWarn', 'DapStoppedLine' },
-        Breakpoint = ' ',
-        BreakpointCondition = ' ',
-        BreakpointRejected = { ' ', 'DiagnosticError' },
-        LogPoint = '.>',
-      }
 
-      for name, sign in pairs(dap_icons) do
+      for name, sign in pairs(Util.icons.all_icons.dap) do
         sign = type(sign) == 'table' and sign or { sign }
-        vim.fn.sign_define('Dap' .. name, {
-          text = sign[1],
-          texthl = sign[2] or 'DiagnosticInfo',
-          linehl = sign[3],
-          numhl = sign[3],
-        })
+        vim.fn.sign_define('Dap' .. name, { text = sign[1], texthl = sign[2] or 'DiagnosticInfo', linehl = sign[3], numhl = sign[3] })
       end
       -- setup dap config by VsCode launch.json file
       local vscode = require 'dap.ext.vscode'
