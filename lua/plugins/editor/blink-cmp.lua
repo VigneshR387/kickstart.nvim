@@ -1,7 +1,7 @@
 return { -- Autocompletion
   'saghen/blink.cmp',
   enabled = true,
-  event = 'VimEnter',
+  event = { 'InsertEnter', 'CmdlineEnter' },
   version = '1.*',
   dependencies = {
     'L3MON4D3/LuaSnip',
@@ -86,5 +86,18 @@ return { -- Autocompletion
 
     -- Shows a signature help window while you type arguments for a function
     signature = { enabled = true },
+
+    sources = {
+      -- add lazydev to your completion providers
+      default = { 'lazydev', 'lsp', 'path', 'snippets', 'buffer' },
+      providers = {
+        lazydev = {
+          name = 'LazyDev',
+          module = 'lazydev.integrations.blink',
+          -- make lazydev completions top priority (see `:h blink.cmp`)
+          score_offset = 100,
+        },
+      },
+    },
   },
 }
