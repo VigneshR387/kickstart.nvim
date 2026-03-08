@@ -1,1 +1,5 @@
-return{ 'NMAC427/guess-indent.nvim', opts = {} }
+return {
+  'NMAC427/guess-indent.nvim',
+  event = 'LazyFile',
+  opts = {},
+}
