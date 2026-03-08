@@ -1,5 +1,8 @@
 return {
-  'jbyuki/one-small-step-for-vimkind',
+  'mfussenegger/nvim-dap',
+  dependencies = {
+    {
+      'jbyuki/one-small-step-for-vimkind',
       -- stylua: ignore
       config = function()
         local dap = require("dap")
@@ -35,4 +38,6 @@ return {
           },
         }
       end,
+    },
+  },
 }
