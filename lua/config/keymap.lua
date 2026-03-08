@@ -100,7 +100,7 @@ map('n', '<leader>uI', function()
   vim.api.nvim_input 'I'
 end, { desc = 'Inspect Tree' })
 -- lua
-map({ 'n', 'x' }, '<leader>r', function() Snacks.debug.run() end, { desc = 'Run Lua', ft = 'lua' })
+map({ 'n', 'x' }, '<leader>R', function() Snacks.debug.run() end, { desc = 'Run Lua', ft = 'lua' })
 
 -- git
 if vim.fn.executable 'lazygit' == 1 then
