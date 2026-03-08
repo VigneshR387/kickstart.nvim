@@ -12,7 +12,7 @@
 --  [4] = { import = "plugins.formatting" },
 -- }
 
-local groups = { 'coding', 'colorscheme', 'editor', 'formatting', 'lsp', 'lint', 'ui', 'util', 'treesitter' }
+local groups = { 'dap', 'coding', 'colorscheme', 'editor', 'formatting', 'lsp', 'lint', 'ui', 'util', 'treesitter' }
 local plugins = {
   { import = 'plugins' },
 }
