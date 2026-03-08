@@ -56,13 +56,15 @@ return {
         },
       },
       yamlls = {
+        before_init = function(_, new_config)
+          new_config.settings.yaml.schemas = vim.tbl_deep_extend('force', new_config.settings.yaml.schemas or {}, require('schemastore').yaml.schemas())
+        end,
         settings = {
           yaml = {
             schemaStore = {
               enable = false,
               url = '',
             },
-            schemas = require('schemastore').yaml.schemas(),
           },
         },
       },
@@ -77,6 +79,7 @@ return {
           Lua = {},
         },
       },
+      basedpyright = {},
     }
     for name, server in pairs(servers) do
       vim.lsp.config(name, server)
