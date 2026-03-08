@@ -12,7 +12,7 @@ return {
     -- This plugin streamlines Neovim's LSP setup by automating server installation and activation, providing helpful management commands, and mapping mason.nvim packages to nvim-lspconfig configurations.
     'mason-org/mason-lspconfig.nvim',
   },
-
+  event = 'LazyFile',
   config = function()
     -- If you're wondering about lsp vs treesitter, you can check out the wonderfully
     -- and elegantly composed help section, `:help lsp-vs-treesitter`
