@@ -24,4 +24,5 @@ return {
     },
   },
   opts = {}, -- calls require('mason').setup({})
+  keys = { { '<leader>cm', '<cmd>Mason<cr>', desc = 'Mason' } },
 }

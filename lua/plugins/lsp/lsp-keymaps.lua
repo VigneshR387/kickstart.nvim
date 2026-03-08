@@ -32,6 +32,7 @@ return {
         map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
         -- my declared keymaps
+        map('K', function() vim.lsp.buf.hover() end, 'Hover')
         map('<leader>cl', function() Snacks.picker.lsp_config() end, 'Lsp Info')
         map('<leader>ca', vim.lsp.buf.code_action, 'Code Action', { 'n', 'x' })
         map('<leader>cc', vim.lsp.codelens.run, 'Run Codelens', { 'n', 'x' })
@@ -68,6 +69,7 @@ return {
           --     vim.api.nvim_clear_autocmds { group = 'kickstart-lsp-highlight', buffer = event2.buf }
           --   end,
           -- })
+
           map(']]', function() Snacks.words.jump(vim.v.count1) end, 'Next Reference')
           map('[[', function() Snacks.words.jump(-vim.v.count1) end, 'Prev Reference')
           map('<a-n>', function() Snacks.words.jump(vim.v.count1, true) end, 'Next Reference')

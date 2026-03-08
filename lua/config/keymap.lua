@@ -6,7 +6,7 @@ local map = Snacks.keymap.set
 -- Clear highlights on search when pressing <Esc> in normal mode
 
 --  See `:help hlsearch`
-map('n', '<Esc>', '<cmd>nohlsearch<CR>')
+map('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = 'Escape and Clear hlsearch' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
