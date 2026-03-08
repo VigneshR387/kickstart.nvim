@@ -11,12 +11,6 @@ return {
 
     -- This plugin streamlines Neovim's LSP setup by automating server installation and activation, providing helpful management commands, and mapping mason.nvim packages to nvim-lspconfig configurations.
     'mason-org/mason-lspconfig.nvim',
-
-    -- Useful status updates for LSP.
-    { 'j-hui/fidget.nvim', opts = {} },
-
-    -- Allows extra capabilities provided by blink.cmp
-    'saghen/blink.cmp',
   },
 
   config = function()
