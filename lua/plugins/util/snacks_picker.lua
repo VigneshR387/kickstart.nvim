@@ -13,11 +13,14 @@ return {
     { '<leader>:', function() Snacks.picker.command_history() end, desc = 'Command History' },
     -- find
     { '<leader>fb', function() Snacks.picker.buffers() end, desc = 'Buffers' },
+    { '<leader>fB', function() Snacks.picker.buffers { hidden = true, nofile = true } end, desc = 'Buffers (all)' },
     { '<leader>fc', function() Snacks.picker.files { cwd = vim.fn.stdpath 'config' } end, desc = 'Find Config File' },
-    { '<leader>ff', function() Snacks.picker.files() end, desc = 'Find Files' },
+    { '<leader>ff', function() Util.pick.open 'files' end, desc = 'Find Files (Root Dir)' },
+    { '<leader>fF', function() Util.pick.open('files', { root = false }) end, desc = 'Find Files (cwd)' },
     { '<leader>fg', function() Snacks.picker.git_files() end, desc = 'Find Git Files' },
     { '<leader>fp', function() Snacks.picker.projects() end, desc = 'Projects' },
     { '<leader>fr', function() Snacks.picker.recent() end, desc = 'Recent' },
+    { '<leader>fR', function() Snacks.picker.recent { filter = { cwd = true } } end, desc = 'Recent (cwd)' },
     -- git
     { '<leader>gb', function() Snacks.picker.git_log_line() end, desc = 'Git Blame Line' },
     {
