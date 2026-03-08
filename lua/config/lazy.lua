@@ -35,7 +35,7 @@ rtp:prepend(lazypath)
 _G.Util = require 'util'
 
 -- load the helper modules from util.plugin
-require 'util.plugin'
+require('util.plugin').setup()
 
 -- Setup lazy.nvim
 require('lazy').setup {
