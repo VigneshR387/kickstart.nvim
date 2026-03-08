@@ -31,6 +31,7 @@ end
 local rtp = vim.opt.rtp
 rtp:prepend(lazypath)
 
+require('util.plugin').lazy_file()
 -- Setup lazy.nvim
 require('lazy').setup {
   spec = plugins,
