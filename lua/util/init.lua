@@ -58,8 +58,11 @@ function M.get_plugin_path(name, path)
 end
 
 -- Check if a plugin exists in the lazy.nvim spec
----@param plugin string
-function M.has(plugin) return M.get_plugin(plugin) ~= nil end
+---@param name string
+function M.has(name)
+  local plugin = M.get_plugin(name)
+  return plugin ~= nil and plugin.enabled ~= false
+end
 
 -- -- Check if a Util "extra" module is enabled
 -- ---@param extra string
