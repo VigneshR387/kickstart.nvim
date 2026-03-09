@@ -19,6 +19,7 @@ return {
     { '<leader>fF', function() Util.pick.open('files', { root = false }) end, desc = 'Find Files (cwd)' },
     { '<leader>fg', function() Snacks.picker.git_files() end, desc = 'Find Git Files' },
     { '<leader>fp', function() Snacks.picker.projects() end, desc = 'Projects' },
+    { '<leader>fP', function() Snacks.picker.projects { confirm = 'picker_files' } end, desc = 'Projects (file picker)' },
     { '<leader>fr', function() Snacks.picker.recent() end, desc = 'Recent' },
     { '<leader>fR', function() Snacks.picker.recent { filter = { cwd = true } } end, desc = 'Recent (cwd)' },
     -- git
