@@ -205,3 +205,14 @@ map('n', '[w', diagnostic_goto(false, 'WARN'), { desc = 'Prev Warning' })
 -- better new line
 map('n', 'o', 'o<Esc>', { desc = 'New line below without insert' })
 map('n', 'O', 'O<Esc>', { desc = 'New line above without insert' })
+
+-- Disable arrow keys in all modes
+
+map({ 'n', 'i', 'v', 'x' }, '<Up>', '<Nop>')
+map({ 'n', 'i', 'v', 'x' }, '<Down>', '<Nop>')
+map({ 'n', 'i', 'v', 'x' }, '<Left>', '<Nop>')
+map({ 'n', 'i', 'v', 'x' }, '<Right>', '<Nop>')
+
+-- Exit mode  keys
+map('i', 'jj', '<Esc>', { noremap = false })
+map('i', 'jﬂ', '<Esc>', { noremap = false })
