@@ -216,3 +216,6 @@ map({ 'n', 'i', 'v', 'x' }, '<Right>', '<Nop>')
 -- Exit mode  keys
 map('i', 'jj', '<Esc>', { noremap = false })
 map('i', 'jﬂ', '<Esc>', { noremap = false })
+
+-- Disable commandline window
+map('n', 'q:', '<Nop>')
