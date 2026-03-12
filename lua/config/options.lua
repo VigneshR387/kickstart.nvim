@@ -66,7 +66,7 @@ opt.inccommand = 'split'
 opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-opt.scrolloff = 10
+opt.scrolloff = 0
 
 -- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
 -- instead raise a dialog asking if you wish to save the current file(s)
@@ -96,5 +96,7 @@ vim.g.snacks_animate = true
 opt.wrap = true -- Disable line wrap
 
 opt.foldlevel = 99
+
+vim.env.PATH = vim.env.PATH .. ':' .. vim.fn.expand '~/.cargo/bin'
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
