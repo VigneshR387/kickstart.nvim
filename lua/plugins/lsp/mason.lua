@@ -14,6 +14,7 @@ return {
           'yaml-language-server',
           'basedpyright',
           'bash-language-server',
+          'marksman',
 
           -- linters
           'eslint_d',

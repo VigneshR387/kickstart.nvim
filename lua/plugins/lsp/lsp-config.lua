@@ -80,6 +80,7 @@ return {
         },
       },
       basedpyright = {},
+      marksman = {},
     }
     for name, server in pairs(servers) do
       vim.lsp.config(name, server)
