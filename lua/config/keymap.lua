@@ -72,6 +72,10 @@ map('n', '<leader>fD', function() Util.file.delete_current_file() end, { desc = 
 -- save file
 map({ 'i', 'x', 'n', 's' }, '<C-s>', '<cmd>w<cr><esc>', { desc = 'Save File' })
 
+-- file-details
+-- comments file location and  repo link if  its a plugin at the top of file
+map({ 'n', 'v', 'i' }, '<M-z>', function() Util.file.file_detail() end, { desc = 'Insert filename header with plugin link' })
+
 -- better indenting
 map('x', '<', '<gv')
 map('x', '>', '>gv')
