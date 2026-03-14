@@ -66,6 +66,9 @@ map('n', '<leader>K', '<cmd>norm! K<cr>', { desc = 'Keywordprg' })
 -- new file
 map('n', '<leader>fn', '<cmd>enew<cr>', { desc = 'New File' })
 
+-- Keymap to delete the current file
+map('n', '<leader>fD', function() Util.file.delete_current_file() end, { desc = '[P]Delete current file' })
+
 -- save file
 map({ 'i', 'x', 'n', 's' }, '<C-s>', '<cmd>w<cr><esc>', { desc = 'Save File' })
 
