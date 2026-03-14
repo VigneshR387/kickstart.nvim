@@ -61,17 +61,23 @@ function M.file_detail()
   for _, line in ipairs(buf_lines) do
     local owner, repo = line:match '[\'"]([%w_%-%.]+)/([%w_%-%.]+)[\'"]'
     if owner and repo then
+      table.insert(lines, ' ')
+      table.insert(lines, 'Link to github repo:')
       table.insert(lines, 'https://github.com/' .. owner .. '/' .. repo)
+      table.insert(lines, '')
       break
     end
   end
-
   -- Insert at the top of the file
   vim.api.nvim_buf_set_lines(0, 0, 0, false, lines)
 
-  -- Select and comment the inserted lines
+  -- Select and comment the inserted lines (exclude trailing empty line)
+  local comment_count = #lines
+  local has_trailing_empty = lines[#lines] == ''
+  if has_trailing_empty then comment_count = comment_count - 1 end
+
   vim.api.nvim_win_set_cursor(0, { 1, 0 })
-  vim.cmd('normal! V' .. (#lines - 1) .. 'j')
+  vim.cmd('normal! V' .. (comment_count - 1) .. 'j')
   vim.cmd 'normal gcc'
 end
 
