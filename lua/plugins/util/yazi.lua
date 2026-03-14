@@ -1,6 +1,6 @@
 ---@type LazySpec
 return {
-  'VigneshR387/yazi.nvim',
+  'mikavilpas/yazi.nvim',
   enabled = true,
   version = '*', -- use the latest stable version
   event = 'VeryLazy',
