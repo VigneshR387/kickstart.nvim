@@ -1,6 +1,5 @@
 -- [[ Basic Keymaps ]]
 --  See `:help map()`
-
 local root = require 'util.root'
 local map = Snacks.keymap.set
 -- Clear highlights on search when pressing <Esc> in normal mode
@@ -226,6 +225,7 @@ map('i', 'jﬂ', '<Esc>', { noremap = false })
 
 -- Disable commandline window
 map('n', 'q:', '<Nop>')
+
 -- Delete Image
 map('n', '<leader>id', function()
   local line = vim.api.nvim_get_current_line()
@@ -252,3 +252,124 @@ end, {
 })
 
 -- Keymap for folding markdown headings of level 1 or above
+map('n', 'zj', function()
+  -- "Update" saves only if the buffer has been modified since the last save
+  vim.cmd 'silent update'
+  -- map("n", "<leader>mfj", function()
+  -- Reloads the file to refresh folds, otheriise you have to re-open neovim
+  vim.cmd 'edit!'
+  -- Unfold everything first or I had issues
+  vim.cmd 'normal! zR'
+  Util.markdown.fold_markdown_headings { 6, 5, 4, 3, 2, 1 }
+  vim.cmd 'normal! zz' -- center the cursor line on screen
+end, { ft = 'markdown', desc = '[P]Fold all headings level 1 or above' })
+
+-- Keymap for folding markdown headings of level 2 or above
+-- I know, it reads like "madafaka" but "k" for me means "2"
+map('n', 'zk', function()
+  -- "Update" saves only if the buffer has been modified since the last save
+  vim.cmd 'silent update'
+  -- map("n", "<leader>mfk", function()
+  -- Reloads the file to refresh folds, otherwise you have to re-open neovim
+  vim.cmd 'edit!'
+  -- Unfold everything first or I had issues
+  vim.cmd 'normal! zR'
+  Util.markdown.fold_markdown_headings { 6, 5, 4, 3, 2 }
+  vim.cmd 'normal! zz' -- center the cursor line on screen
+end, { ft = 'markdown', desc = '[P]Fold all headings level 2 or above' })
+
+-- Keymap for folding markdown headings of level 3 or above
+map('n', 'zl', function()
+  -- "Update" saves only if the buffer has been modified since the last save
+  vim.cmd 'silent update'
+  -- map("n", "<leader>mfl", function()
+  -- Reloads the file to refresh folds, otherwise you have to re-open neovim
+  vim.cmd 'edit!'
+  -- Unfold everything first or I had issues
+  vim.cmd 'normal! zR'
+  Util.markdown.fold_markdown_headings { 6, 5, 4, 3 }
+  vim.cmd 'normal! zz' -- center the cursor line on screen
+end, { ft = 'markdown', desc = '[P]Fold all headings level 3 or above' })
+
+-- Keymap for folding markdown headings of level 4 or above
+map('n', 'z;', function()
+  -- "Update" saves only if the buffer has been modified since the last save
+  vim.cmd 'silent update'
+  -- map("n", "<leader>mf;", function()
+  -- Reloads the file to refresh folds, otherwise you have to re-open neovim
+  vim.cmd 'edit!'
+  -- Unfold everything first or I had issues
+  vim.cmd 'normal! zR'
+  Util.markdown.fold_markdown_headings { 6, 5, 4 }
+  vim.cmd 'normal! zz' -- center the cursor line on screen
+end, { ft = 'markdown', desc = '[P]Fold all headings level 4 or above' })
+
+-- Use <CR> to fold when in normal mode
+-- To see help about folds use `:help fold`
+map('n', '<CR>', function()
+  -- Get the current line number
+  local line = vim.fn.line '.'
+  -- Get the fold level of the current line
+  local foldlevel = vim.fn.foldlevel(line)
+  if foldlevel == 0 then
+    vim.notify('No fold found', vim.log.levels.INFO)
+  else
+    vim.cmd 'normal! za'
+    vim.cmd 'normal! zz' -- center the cursor line on screen
+  end
+end, { desc = '[P]Toggle fold' })
+
+-- Keymap for unfolding markdown headings of level 2 or above
+-- Changed all the markdown folding and unfolding keymaps from <leader>mfj to
+-- zj, zk, zl, z; and zu respectively lamw25wmal
+map('n', 'zu', function()
+  -- "Update" saves only if the buffer has been modified since the last save
+  vim.cmd 'silent update'
+  -- map("n", "<leader>mfu", function()
+  -- Reloads the file to reflect the changes
+  vim.cmd 'edit!'
+  vim.cmd 'normal! zR' -- Unfold all headings
+  vim.cmd 'normal! zz' -- center the cursor line on screen
+end, { ft = 'markdown', desc = '[P]Unfold all headings level 2 or above' })
+
+-- Keymap for  Generating/Updating TOC (markdown-toc)
+map(
+  'n',
+  '<leader>mt',
+  function() Util.markdown.update_markdown_toc('## Contents', '### Table of contents') end,
+  { ft = 'markdown', desc = '[P]Insert/update Markdown TOC' }
+)
+
+-- Toggle bullet point at the beginning of the current line in normal mode
+-- If in a multiline paragraph, make sure the cursor is on the line at the top
+-- "d" is for "dash" lamw25wmal
+map('n', '<leader>md', function() Util.markdown.toggle_bullet() end, { ft = 'markdown', desc = '[P]Toggle bullet point (dash)' })
+
+-- In visual mode, check if the selected text is already striked through and show a message if it is
+-- If not, surround it
+vim.keymap.set('v', '<leader>mx', function() Util.markdown.toggle_strikethrough() end, { desc = '[P]Strike through current selection' })
+
+-- In visual mode, check if the selected text is already bold and show a message if it is
+-- If not, surround it with double asterisks for bold
+map('v', '<leader>mb', function() Util.markdown.toggle_bold() end, { ft = 'markdown', desc = '[P]BOLD current selection' })
+
+-- -- Multiline unbold attempt
+-- -- In normal mode, bold the current word under the cursor
+-- -- If already bold, it will unbold the word under the cursor
+-- -- If you're in a multiline bold, it will unbold it only if you're on the
+-- -- first line
+map('n', '<leader>mb', function() Util.markdown.multiline_toggle_bold() end, { ft = 'markdown', desc = '[P]BOLD toggle bold markers' })
+
+-- Show spelling suggestions / spell suggestions
+-- NOTE: I changed this to accept the first spelling suggestion
+map('n', '<leader>mss', function()
+  -- Simulate pressing "z=" with "m" option using feedkeys
+  -- vim.api.nvim_replace_termcodes ensures "z=" is correctly interpreted
+  -- 'm' is the {mode}, which in this case is 'Remap keys'. This is default.
+  -- If {mode} is absent, keys are remapped.
+  --
+  -- I tried this keymap as usually with
+  vim.cmd 'normal! 1z='
+  -- But didn't work, only with nvim_feedkeys
+  -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("z=", true, false, true), "m", true)
+end, { ft = 'markdown', desc = '[P]Spelling suggestions' })
