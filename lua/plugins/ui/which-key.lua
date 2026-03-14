@@ -17,6 +17,9 @@ return { -- Useful plugin to show you pending keybinds.
         { '<leader>f', group = 'file/find' },
         { '<leader>g', group = 'git' },
         { '<leader>gh', group = 'hunks' },
+        { '<leader>i', group = 'image', icon = { icon = '󰋩', color = 'green' } },
+        { '<leader>m', group = 'markdown', icon = { cat = 'filetype', name = 'markdown' } },
+        { '<leader>o', group = 'overseer' },
         { '<leader>q', group = 'quit/session' },
         { '<leader>s', group = 'search' },
         { '<leader>u', group = 'ui' },
@@ -51,6 +54,12 @@ return { -- Useful plugin to show you pending keybinds.
         { '<leader>7', hidden = true },
         { '<leader>8', hidden = true },
         { '<leader>9', hidden = true },
+      },
+    },
+    icons = {
+      rules = {
+        { pattern = 'yazi', icon = '󰇥', color = 'orange' },
+        { pattern = 'overseer', icon = '󰜎', color = 'orange' },
       },
     },
   },
