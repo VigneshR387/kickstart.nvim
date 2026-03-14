@@ -226,3 +226,29 @@ map('i', 'jﬂ', '<Esc>', { noremap = false })
 
 -- Disable commandline window
 map('n', 'q:', '<Nop>')
+-- Delete Image
+map('n', '<leader>id', function()
+  local line = vim.api.nvim_get_current_line()
+  local image_pattern = '%[.-%]%((.-)%)'
+  local _, _, image_path = string.find(line, image_pattern)
+
+  if not image_path then
+    print 'No image found'
+    return
+  end
+
+  local current = vim.fn.expand '%:p:h'
+  local path = current .. '/' .. image_path
+
+  vim.fn.system { 'gio', 'trash', path }
+
+  -- delete the markdown image line
+  vim.cmd 'normal! dd'
+
+  print 'Image moved to trash and line deleted'
+end, {
+  ft = 'markdown',
+  desc = 'Delete Markdown image',
+})
+
+-- Keymap for folding markdown headings of level 1 or above
