@@ -61,6 +61,7 @@ return {
         },
         right = {
           { title = 'Grug Far', ft = 'grug-far', size = { width = 0.4 } },
+          { title = 'aerial', ft = 'aerial', size = { width = 0.3 } },
         },
         keys = {
           -- increase width
