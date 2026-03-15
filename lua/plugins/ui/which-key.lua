@@ -4,7 +4,13 @@ return { -- Useful plugin to show you pending keybinds.
   opts = {
     -- delay between pressing a key and opening which-key (milliseconds)
     delay = 0,
-    icons = { mappings = vim.g.have_nerd_font },
+    icons = {
+      mappings = vim.g.have_nerd_font,
+      rules = {
+        { pattern = 'yazi', icon = '󰇥', color = 'orange' },
+        { pattern = 'overseer', icon = '', color = 'orange' },
+      },
+    },
 
     -- Document existing key chains
     spec = {
@@ -54,12 +60,6 @@ return { -- Useful plugin to show you pending keybinds.
         { '<leader>7', hidden = true },
         { '<leader>8', hidden = true },
         { '<leader>9', hidden = true },
-      },
-    },
-    icons = {
-      rules = {
-        { pattern = 'yazi', icon = '󰇥', color = 'orange' },
-        { pattern = 'overseer', icon = '󰜎', color = 'orange' },
       },
     },
   },
