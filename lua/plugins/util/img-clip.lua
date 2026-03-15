@@ -8,6 +8,8 @@ return {
       -- add options here
       -- or leave it empty to use the default settings
       default = {
+        -- logging options
+        verbose = false,
 
         -- file and directory options
         -- expands dir_path to an absolute path
