@@ -1,12 +1,13 @@
 return {
   'stevearc/aerial.nvim',
-  lazy = true,
+  event = 'LazyFile',
   dependencies = {
     'nvim-treesitter/nvim-treesitter',
     'nvim-tree/nvim-web-devicons',
   },
-  opts = {
-    attach_mode = 'window',
-  },
-  opts = function() Snacks.keymap.set('<leader>mo', '<cmd>AerialToggle!<CR>', { ft = 'markdown', desc = 'Toggle Outline(Ariel)' }) end,
+  opts = function()
+    Snacks.keymap.set({ 'n', 'v' }, '<leader>mo', '<cmd>AerialToggle!<CR>', { ft = 'markdown', desc = 'Toggle Outline(Ariel)' })
+    -- NOTE: The options should be returned inside opts =  function()
+    return { attach_mode = 'window' }
+  end,
 }
