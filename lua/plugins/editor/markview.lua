@@ -11,7 +11,7 @@ return {
   opts = function()
     require('markview').setup {
       markdown = {
-        headings = require('markview.presets').headings.marks,
+        headings = { presets = { headings = glow } },
       },
     }
   end,
