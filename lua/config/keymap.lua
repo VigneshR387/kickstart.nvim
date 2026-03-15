@@ -224,7 +224,7 @@ map('i', 'jj', '<Esc>', { noremap = false })
 map('i', 'jﬂ', '<Esc>', { noremap = false })
 
 -- Disable commandline window
-map('n', 'q:', '<Nop>')
+map('n', 'q', '<Nop>', { noremap = true, silent = true })
 
 -- Delete Image
 map('n', '<leader>id', function()
