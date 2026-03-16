@@ -22,15 +22,25 @@ return {
       desc = 'Explorer Yazi (cwd dir)',
     },
     {
-      -- Open in the current working directory
       '<leader>E',
-      '<cmd>Yazi cwd<cr>',
+      mode = { 'n', 'v' },
+      function()
+        local root = vim.fn.systemlist('git rev-parse --show-toplevel')[1]
+        if vim.v.shell_error ~= 0 then
+          root = vim.fn.getcwd() -- fallback to cwd if not in a git repo
+        end
+        require('yazi').yazi(nil, root)
+      end,
       desc = 'Explorer Yazi (root)',
     },
     {
-      -- Open in the current working directory
       '<leader>fE',
-      '<cmd>Yazi cwd<cr>',
+      mode = { 'n', 'v' },
+      function()
+        local git_root = vim.fn.systemlist('git rev-parse --show-toplevel')[1]
+        if vim.v.shell_error ~= 0 then git_root = vim.fn.getcwd() end
+        require('yazi').yazi(nil, git_root)
+      end,
       desc = 'Explorer Yazi (root)',
     },
     {
