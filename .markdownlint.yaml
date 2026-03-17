@@ -46,10 +46,10 @@ MD007: false
 # at the end, it will trigger it, and haven't looked into how to fix that
 # https://github.com/DavidAnson/markdownlint/blob/main/doc/md013.md
 # MD013: false
-# # MD013:
-#   code_blocks: false
-#   headings: false
-#   tables: false
+MD013:
+  # code_blocks: false
+  # headings: false
+  tables: false
 
 # Spaces after list markers
 # Disabled this because of confluence formatting
