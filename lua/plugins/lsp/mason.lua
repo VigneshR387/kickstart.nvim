@@ -14,8 +14,8 @@ return {
           'yaml-language-server',
           'basedpyright',
           'bash-language-server',
-          'marksman',
-
+          'markdown-oxide',
+          'harper-ls',
           -- linters
           'eslint_d',
           'shellcheck',
