@@ -13,12 +13,12 @@ return {
     { '<c-s>', mode = { 'c' }, function() require('flash').toggle() end, desc = 'Toggle Flash Search' },
     -- Simulate nvim-treesitter incremental selection
     {
-      '<c-space>',
+      '<C-s>',
       mode = { 'n', 'o', 'x' },
       function()
         require('flash').treesitter {
           actions = {
-            ['<c-space>'] = 'next',
+            ['<c-s>'] = 'next',
             ['<BS>'] = 'prev',
           },
         }
