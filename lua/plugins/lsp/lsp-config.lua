@@ -80,7 +80,41 @@ return {
         },
       },
       basedpyright = {},
-      marksman = {},
+
+      markdown_oxide = {
+        -- Ensure that dynamicRegistration is enabled
+        -- This allows the LS to take into account actions like Create Unresolved File, etc
+        capabilities = vim.tbl_deep_extend('force', vim.lsp.protocol.make_client_capabilities(), require('blink.cmp').get_lsp_capabilities(), {
+          workspace = {
+            didChangeWatchedFiles = {
+              dynamicRegistration = true,
+            },
+          },
+        }),
+      },
+
+      harper_ls = {
+        enabled = true,
+        filetypes = { 'markdown', 'typst' },
+        settings = {
+          ['harper-ls'] = {
+            userDictPath = '~/github/dotfiles-latest/neovim/neobean/spell/en.utf-8.add',
+            -- linters = {
+            --   -- Disabling ToDoHyphen because of
+            --   -- https://github.com/Automattic/harper/issues/1573#issuecomment-3777776431
+            --   -- -- ToDoHyphen = false,
+            --   -- SentenceCapitalization = true,
+            --   -- SpellCheck = true,
+            -- },
+            isolateEnglish = true,
+            markdown = {
+              -- [ignores this part]()
+              -- [[ also ignores my marksman links ]]
+              IgnoreLinkTitle = true,
+            },
+          },
+        },
+      },
     }
     for name, server in pairs(servers) do
       vim.lsp.config(name, server)
