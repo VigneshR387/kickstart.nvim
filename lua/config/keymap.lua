@@ -68,9 +68,6 @@ map('n', '<leader>fn', '<cmd>enew<cr>', { desc = 'New File' })
 -- Keymap to delete the current file
 map('n', '<leader>fD', function() Util.file.delete_current_file() end, { desc = '[P]Delete current file' })
 
--- save file
-map({ 'i', 'x', 'n', 's' }, '<C-s>', '<cmd>w<cr><esc>', { desc = 'Save File' })
-
 -- file-details
 -- comments file location and  repo link if  its a plugin at the top of file
 map({ 'n', 'v', 'i' }, '<M-z>', function() Util.file.file_detail() end, { desc = 'Insert filename header with plugin link' })
@@ -207,6 +204,28 @@ map('n', ']e', diagnostic_goto(true, 'ERROR'), { desc = 'Next Error' })
 map('n', '[e', diagnostic_goto(false, 'ERROR'), { desc = 'Prev Error' })
 map('n', ']w', diagnostic_goto(true, 'WARN'), { desc = 'Next Warning' })
 map('n', '[w', diagnostic_goto(false, 'WARN'), { desc = 'Prev Warning' })
+-- Copy the current line and all diagnostics on that line to system clipboard
+map('n', 'yd', function()
+  local pos = vim.api.nvim_win_get_cursor(0)
+  local line_num = pos[1] - 1 -- 0-indexed
+  local line_text = vim.api.nvim_buf_get_lines(0, line_num, line_num + 1, false)[1]
+  local diagnostics = vim.diagnostic.get(0, { lnum = line_num })
+  if #diagnostics == 0 then
+    vim.notify('No diagnostic found on this line', vim.log.levels.WARN)
+    return
+  end
+  local message_lines = {}
+  for _, d in ipairs(diagnostics) do
+    for msg_line in d.message:gmatch '[^\n]+' do
+      table.insert(message_lines, msg_line)
+    end
+  end
+  local formatted = {}
+  table.insert(formatted, 'Line:\n' .. line_text .. '\n')
+  table.insert(formatted, 'Diagnostic on that line:\n' .. table.concat(message_lines, '\n'))
+  vim.fn.setreg('+', table.concat(formatted, '\n\n'))
+  vim.notify('Line and diagnostic copied to clipboard', vim.log.levels.INFO)
+end, { desc = '[P]Yank line and diagnostic to system clipboard' })
 
 -- better new line
 map('n', 'o', 'o<Esc>', { desc = 'New line below without insert' })
@@ -225,6 +244,27 @@ map('i', 'jﬂ', '<Esc>', { noremap = false })
 
 -- Disable commandline window
 map('n', 'q', '<Nop>', { noremap = true, silent = true })
+
+-- Paste images
+-- I tried using <C-v> but duh, that's used for visual block mode
+vim.keymap.set({ 'n', 'i' }, '<M-a>', function()
+  local pasted_image = require('img-clip').paste_image()
+  if pasted_image then
+    -- "Update" saves only if the buffer has been modified since the last save
+    vim.cmd 'silent! update'
+    -- Get the current line
+    local line = vim.api.nvim_get_current_line()
+    -- Move cursor to end of line
+    vim.api.nvim_win_set_cursor(0, { vim.api.nvim_win_get_cursor(0)[1], #line })
+    -- I reload the file, otherwise I cannot view the image after pasted
+    vim.cmd 'edit!'
+  end
+end, { desc = '[P]Paste image from system clipboard' })
+
+-- Keymap to paste images in the 'assets' directory
+-- This pastes images for my blogpost, I need to keep them in a different directory
+-- so I pass those options to img-clip
+vim.keymap.set({ 'n', 'i' }, '<M-1>', Util.markdown.process_image, { desc = "[P]Paste image 'assets' directory" })
 
 -- Delete Image
 map('n', '<leader>id', function()
@@ -332,7 +372,7 @@ map('n', '<leader>md', function() Util.markdown.toggle_bullet() end, { ft = 'mar
 
 -- In visual mode, check if the selected text is already striked through and show a message if it is
 -- If not, surround it
-vim.keymap.set('v', '<leader>mx', function() Util.markdown.toggle_strikethrough() end, { desc = '[P]Strike through current selection' })
+map('v', '<leader>mx', function() Util.markdown.toggle_strikethrough() end, { ft = 'markdown', desc = '[P]Strike through current selection' })
 
 -- In visual mode, check if the selected text is already bold and show a message if it is
 -- If not, surround it with double asterisks for bold
@@ -347,7 +387,7 @@ map('n', '<leader>mb', function() Util.markdown.multiline_toggle_bold() end, { f
 
 -- Show spelling suggestions / spell suggestions
 -- NOTE: I changed this to accept the first spelling suggestion
-map('n', '<leader>mss', function()
+map('n', '<leader>ms', function()
   -- Simulate pressing "z=" with "m" option using feedkeys
   -- vim.api.nvim_replace_termcodes ensures "z=" is correctly interpreted
   -- 'm' is the {mode}, which in this case is 'Remap keys'. This is default.
@@ -359,26 +399,142 @@ map('n', '<leader>mss', function()
   -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("z=", true, false, true), "m", true)
 end, { ft = 'markdown', desc = '[P]Spelling suggestions' })
 
--- Copy the current line and all diagnostics on that line to system clipboard
-map('n', 'yd', function()
-  local pos = vim.api.nvim_win_get_cursor(0)
-  local line_num = pos[1] - 1 -- 0-indexed
-  local line_text = vim.api.nvim_buf_get_lines(0, line_num, line_num + 1, false)[1]
-  local diagnostics = vim.diagnostic.get(0, { lnum = line_num })
-  if #diagnostics == 0 then
-    vim.notify('No diagnostic found on this line', vim.log.levels.WARN)
+-- Keymap to switch to the daily note or create it if it does not exist
+map('n', '<leader>fd', function()
+  local current_line = vim.api.nvim_get_current_line()
+  local date_line = current_line:match '%[%[%d+%-%d+%-%d+%-%w+%]%]' or ('[[' .. os.date '%Y-%m-%d-%A' .. ']]')
+  Util.markdown.switch_to_daily_note(date_line)
+end, { desc = '[P]Go to or create daily note' })
+
+-- These create the the markdown heading
+-- H1
+map('n', '<leader>jj', function()
+  local date_line = Util.markdown.insert_heading_and_date(1)
+  -- If you just want to add the heading, comment the line below
+  Util.markdown.create_daily_note(date_line)
+end, { desc = '[P]H1 heading and date' })
+
+-- H2
+map('n', '<leader>kk', function()
+  local date_line = Util.markdown.insert_heading_and_date(2)
+  -- if you just want to add the heading, comment the line below
+  Util.markdown.create_daily_note(date_line)
+end, { desc = '[p]h2 heading and date' })
+
+-- h3
+map('n', '<leader>ll', function()
+  local date_line = Util.markdown.insert_heading_and_date(3)
+  -- if you just want to add the heading, comment the line below
+  Util.markdown.create_daily_note(date_line)
+end, { desc = '[p]h3 heading and date' })
+
+-- h4
+map('n', '<leader>;;', function()
+  local date_line = Util.markdown.insert_heading_and_date(4)
+  -- if you just want to add the heading, comment the line below
+  Util.markdown.create_daily_note(date_line)
+end, { desc = '[p]h4 heading and date' })
+
+-- h5
+map('n', '<leader>uu', function()
+  local date_line = Util.markdown.insert_heading_and_date(5)
+  -- if you just want to add the heading, comment the line below
+  Util.markdown.create_daily_note(date_line)
+end, { desc = '[p]h5 heading and date' })
+
+-- h6
+map('n', '<leader>ii', function()
+  local date_line = Util.markdown.insert_heading_and_date(6)
+  -- if you just want to add the heading, comment the line below
+  Util.markdown.create_daily_note(date_line)
+end, { desc = '[p]h6 heading and date' })
+
+-- create or find a daily note
+map('n', '<leader>fC', function()
+  -- use the current line for date extraction
+  local current_line = vim.api.nvim_get_current_line()
+  Util.markdown.create_daily_note(current_line)
+end, { desc = '[p]create daily note' })
+
+-- extract the y-m-d parts from the current filename
+local function current_file_date()
+  local fname = vim.fn.expand '%:t'
+  local y, m, d = fname:match '^(%d+)%-(%d+)%-(%d+)%-%w+%.md$'
+  return y, m, d
+end
+
+-- create n consecutive daily notes, starting tomorrow
+local function create_next_n_days(n)
+  local y, m, d = current_file_date()
+  if not (y and m and d) then
+    vim.api.nvim_echo({ { 'current file is not a valid daily note filename', 'errormsg' } }, false, {})
     return
   end
-  local message_lines = {}
-  for _, d in ipairs(diagnostics) do
-    for msg_line in d.message:gmatch '[^\n]+' do
-      table.insert(message_lines, msg_line)
-    end
+  local base_ts = os.time { year = y, month = m, day = d }
+  for i = 1, n do
+    local t = os.date('*t', base_ts + 86400 * i)
+    local link = string.format('[[%04d-%02d-%02d-%s]]', t.year, t.month, t.day, os.date('%a', os.time { year = t.year, month = t.month, day = t.day }))
+    Util.markdown.create_daily_note(link)
   end
-  local formatted = {}
-  table.insert(formatted, 'Line:\n' .. line_text .. '\n')
-  table.insert(formatted, 'Diagnostic on that line:\n' .. table.concat(message_lines, '\n'))
-  vim.fn.setreg('+', table.concat(formatted, '\n\n'))
-  vim.notify('Line and diagnostic copied to clipboard', vim.log.levels.INFO)
-end, { desc = '[P]Yank line and diagnostic to system clipboard' })
+end
 
+-- create a daily note for the next day based on the current filename lamw26wmal
+map('n', '<leader>ma', function() create_next_n_days(1) end, { desc = "[p]create next day's daily note from current file" })
+
+-- create the next 7 daily notes (one week) lamw26wmal
+map('n', '<leader>mw', function() create_next_n_days(7) end, { desc = "[p]create next week's daily notes from current file" })
+
+-- create the next n daily notes (prompt) lamw26wmal
+map('n', '<leader>md', function()
+  -- ask for number of days starting from tomorrow
+  vim.ui.input({ prompt = 'how many days to create (starting tomorrow): ', default = '7' }, function(answer)
+    -- validate empty input
+    if not answer or answer == '' then
+      vim.api.nvim_echo({ { 'creation cancelled', 'warningmsg' } }, false, {})
+      return
+    end
+    -- convert to number
+    local n = tonumber(answer)
+    -- validate number
+    if not n then
+      vim.api.nvim_echo({ { 'please enter a valid number', 'errormsg' } }, false, {})
+      return
+    end
+    -- ensure integer > 0
+    n = math.floor(n)
+    if n <= 0 then
+      vim.api.nvim_echo({ { 'enter a number greater than zero', 'errormsg' } }, false, {})
+      return
+    end
+    create_next_n_days(n)
+  end)
+end, { desc = '[p]create n next daily notes from current file' })
+
+-- Increase markdown headings for text selected in visual mode
+map('v', '<leader>mhI', function() Util.markdown.increment_current_heading() end, { ft = 'markdown', desc = 'Increase headings in visual selection' })
+
+-- Decrease markdown headings for text selected in visual mode
+map('v', '<leader>mhD', function() Util.markdown.decrement_current_heading() end, { ft = 'markdown', desc = 'Decrease headings in visual selection' })
+
+-- Convert current markdown buffer to a .docx using pandoc
+-- Assumes pandoc is installed and available in PATH (brew install pandoc)
+map('n', '<leader>mcw', function()
+  -- Save first so pandoc exports the latest content
+  vim.cmd 'write'
+  local md = vim.fn.expand '%:p'
+  if md == '' then
+    print 'No file name'
+    return
+  end
+  local docx = vim.fn.expand '%:p:r' .. '.docx'
+  local cmd = { 'pandoc', md, '-o', docx }
+  vim.fn.jobstart(cmd, {
+    on_exit = function(_, code)
+      if code == 0 then
+        print('Wrote ' .. docx)
+      else
+        print('pandoc failed (exit ' .. code .. ')')
+      end
+    end,
+  })
+end, { ft = 'markdown', desc = '[P]Markdown convert to word' })
