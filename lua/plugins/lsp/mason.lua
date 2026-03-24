@@ -20,6 +20,7 @@ return {
           'eslint_d',
           'shellcheck',
           -- Formatter
+          'prettier',
           'prettierd',
           'markdown-toc',
           'shfmt',
