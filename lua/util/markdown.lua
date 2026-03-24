@@ -291,7 +291,7 @@ function M.parse_date_line(date_line)
     return nil
   end
   local month_abbr = os.date('%b', os.time { year = year, month = month, day = day })
-  local note_dir = string.format('%s/github/obsidian_main/250-daily/%s/%s-%s', home, year, month, month_abbr)
+  local note_dir = string.format('%s/Documents/myobsidianvault/250-daily/%s/%s-%s', home, year, month, month_abbr)
   local note_name = string.format('%s-%s-%s-%s.md', year, month, day, weekday)
   return note_dir, note_name
 end
