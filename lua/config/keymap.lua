@@ -423,7 +423,7 @@ map('n', '<leader>mb', function() Util.markdown.multiline_toggle_bold() end, { f
 
 -- Show spelling suggestions / spell suggestions
 -- NOTE: I changed this to accept the first spelling suggestion
-map('n', '<leader>ms', function()
+map('n', '<leader>mss', function()
   -- Simulate pressing "z=" with "m" option using feedkeys
   -- vim.api.nvim_replace_termcodes ensures "z=" is correctly interpreted
   -- 'm' is the {mode}, which in this case is 'Remap keys'. This is default.
