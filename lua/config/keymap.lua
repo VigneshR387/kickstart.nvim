@@ -435,6 +435,24 @@ map('n', '<leader>mss', function()
   -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("z=", true, false, true), "m", true)
 end, { ft = 'markdown', desc = '[P]Spelling suggestions' })
 
+-- markdown good, accept spell suggestion
+-- Add word under the cursor as a good word
+map('n', '<leader>msg', function()
+  vim.cmd 'normal! zg'
+  -- I do a write so that harper is updated
+  vim.cmd 'silent write'
+end, { desc = '[P]Spelling add word to spellfile' })
+
+-- Undo zw, remove the word from the entry in 'spellfile'.
+map('n', '<leader>msu', function() vim.cmd 'normal! zug' end, { desc = '[P]Spelling undo, remove word from list' })
+
+-- Repeat the replacement done by |z=| for all matches with the replaced word
+-- in the current window.
+map('n', '<leader>msr', function()
+  -- vim.cmd(":spellr")
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':spellr\n', true, false, true), 'm', true)
+end, { desc = '[P]Spelling repeat' })
+
 -- Keymap to switch to the daily note or create it if it does not exist
 map('n', '<leader>fd', function()
   local current_line = vim.api.nvim_get_current_line()
