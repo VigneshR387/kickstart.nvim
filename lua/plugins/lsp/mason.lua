@@ -26,6 +26,7 @@ return {
           'shfmt',
           'stylua',
           'black',
+          'jq',
           -- formatter+linter
           'ruff',
           'markdownlint-cli2',
