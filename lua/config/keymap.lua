@@ -265,7 +265,9 @@ map('i', 'jﬂ', '<Esc>', { noremap = false })
 
 -- Disable commandline window
 map('n', 'q', '<Nop>', { noremap = true, silent = true })
-
+-- ###########################################################################################
+-- #                                    Images (BEGIN)
+-- ###########################################################################################
 -- Paste images
 -- I tried using <C-v> but duh, that's used for visual block mode
 map({ 'n', 'i' }, '<M-a>', function()
@@ -316,6 +318,10 @@ end, {
 -- If the image is referenced multiple times in the file, it will also rename
 -- all the other occurrences in the file
 map('n', '<leader>iR', function() Util.markdown.rename_image() end, { desc = '[P]Rename image under cursor' })
+
+-- ###########################################################################################
+-- #                                    Images (END)
+-- ###########################################################################################
 -- Keymap for folding markdown headings of level 1 or above
 map('n', 'zj', function()
   -- "Update" saves only if the buffer has been modified since the last save
