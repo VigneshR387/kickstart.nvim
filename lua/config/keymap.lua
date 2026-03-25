@@ -72,6 +72,11 @@ map('n', '<leader>fD', function() Util.file.delete_current_file() end, { desc = 
 -- comments file location and  repo link if  its a plugin at the top of file
 map({ 'n', 'v', 'i' }, '<M-z>', function() Util.file.file_detail() end, { desc = 'Insert filename header with plugin link' })
 
+-- Keymaps for copying file path to clipboard
+-- map("n", "<leader>fp", copy_filepath_to_clipboard, { desc = "[P]Copy file path to clipboard" })
+-- I couldn't use <M-p> because its used for previous reference
+map({ 'n', 'v', 'i' }, '<M-c>', function() Util.file.copy_filepath_to_clipboard() end, { desc = '[P]Copy file path to clipboard' })
+
 -- better indenting
 map('x', '<', '<gv')
 map('x', '>', '>gv')

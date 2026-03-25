@@ -81,4 +81,11 @@ function M.file_detail()
   vim.cmd 'normal gcc'
 end
 
+-- Function to copy file path to clipboard
+function M.copy_filepath_to_clipboard()
+  local filePath = vim.fn.expand '%:~'
+  vim.fn.setreg('+', filePath)
+  vim.notify('Path copied to clipboard: ' .. filePath, vim.log.levels.INFO)
+end
+
 return M
