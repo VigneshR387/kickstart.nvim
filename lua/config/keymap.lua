@@ -510,33 +510,11 @@ map('n', '<leader>fC', function()
   Util.markdown.create_daily_note(current_line)
 end, { desc = '[p]create daily note' })
 
--- extract the y-m-d parts from the current filename
-local function current_file_date()
-  local fname = vim.fn.expand '%:t'
-  local y, m, d = fname:match '^(%d+)%-(%d+)%-(%d+)%-%w+%.md$'
-  return y, m, d
-end
-
--- create n consecutive daily notes, starting tomorrow
-local function create_next_n_days(n)
-  local y, m, d = current_file_date()
-  if not (y and m and d) then
-    vim.api.nvim_echo({ { 'current file is not a valid daily note filename', 'errormsg' } }, false, {})
-    return
-  end
-  local base_ts = os.time { year = y, month = m, day = d }
-  for i = 1, n do
-    local t = os.date('*t', base_ts + 86400 * i)
-    local link = string.format('[[%04d-%02d-%02d-%s]]', t.year, t.month, t.day, os.date('%a', os.time { year = t.year, month = t.month, day = t.day }))
-    Util.markdown.create_daily_note(link)
-  end
-end
-
 -- create a daily note for the next day based on the current filename lamw26wmal
-map('n', '<leader>ma', function() create_next_n_days(1) end, { desc = "[p]create next day's daily note from current file" })
+map('n', '<leader>ma', function() Util.markdown.create_next_n_days(1) end, { desc = "[p]create next day's daily note from current file" })
 
 -- create the next 7 daily notes (one week) lamw26wmal
-map('n', '<leader>mw', function() create_next_n_days(7) end, { desc = "[p]create next week's daily notes from current file" })
+map('n', '<leader>mw', function() Util.markdown.create_next_n_days(7) end, { desc = "[p]create next week's daily notes from current file" })
 
 -- create the next n daily notes (prompt) lamw26wmal
 map('n', '<leader>md', function()
@@ -560,7 +538,7 @@ map('n', '<leader>md', function()
       vim.api.nvim_echo({ { 'enter a number greater than zero', 'errormsg' } }, false, {})
       return
     end
-    create_next_n_days(n)
+    Util.markdown.create_next_n_days(n)
   end)
 end, { desc = '[p]create n next daily notes from current file' })
 
