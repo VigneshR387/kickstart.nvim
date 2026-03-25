@@ -268,7 +268,7 @@ map('n', 'q', '<Nop>', { noremap = true, silent = true })
 
 -- Paste images
 -- I tried using <C-v> but duh, that's used for visual block mode
-vim.keymap.set({ 'n', 'i' }, '<M-a>', function()
+map({ 'n', 'i' }, '<M-a>', function()
   local pasted_image = require('img-clip').paste_image()
   if pasted_image then
     -- "Update" saves only if the buffer has been modified since the last save
@@ -285,7 +285,7 @@ end, { desc = '[P]Paste image from system clipboard' })
 -- Keymap to paste images in the 'assets' directory
 -- This pastes images for my blogpost, I need to keep them in a different directory
 -- so I pass those options to img-clip
-vim.keymap.set({ 'n', 'i' }, '<M-1>', Util.markdown.process_image, { desc = "[P]Paste image 'assets' directory" })
+map({ 'n', 'i' }, '<M-1>', Util.markdown.process_image, { desc = "[P]Paste image 'assets' directory" })
 
 -- Delete Image
 map('n', '<leader>id', function()
