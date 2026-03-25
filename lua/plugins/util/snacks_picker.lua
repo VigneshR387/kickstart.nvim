@@ -79,6 +79,65 @@ return {
     { 'gao', function() Snacks.picker.lsp_outgoing_calls() end, desc = 'C[a]lls Outgoing' },
     { '<leader>ss', function() Snacks.picker.lsp_symbols() end, desc = 'LSP Symbols' },
     { '<leader>sS', function() Snacks.picker.lsp_workspace_symbols() end, desc = 'LSP Workspace Symbols' },
+    -- Tasks
+    -- -- Iterate through incomplete tasks in Snacks_picker
+    {
+      -- -- You can confirm in your teminal lamw26wmal with:
+      '<leader>tt',
+      function()
+        Snacks.picker.grep {
+          prompt = ' ',
+          -- pass your desired search as a static pattern
+          search = '^\\s*- \\[ \\]',
+          -- we enable regex so the pattern is interpreted as a regex
+          regex = true,
+          -- no “live grep” needed here since we have a fixed pattern
+          live = false,
+          -- restrict search to the current working directory
+          dirs = { vim.fn.getcwd() },
+          -- I want to filter this to only show markdown files
+          glob = '*.md',
+          -- include files ignored by .gitignore
+          args = { '--no-ignore' },
+          -- Start in normal mode
+          on_show = function() vim.cmd.stopinsert() end,
+          finder = 'grep',
+          format = 'file',
+          show_empty = true,
+          supports_live = false,
+          layout = 'ivy_split',
+        }
+      end,
+      desc = '[P]Search for incomplete tasks',
+    },
+    -- -- Iterate throuth completed tasks in Snacks_picker lamw26wmal
+    {
+      '<leader>tc',
+      function()
+        Snacks.picker.grep {
+          prompt = ' ',
+          -- pass your desired search as a static pattern
+          -- search = "^\\s*- \\[x\\] `done:",
+          search = '^\\s*- \\[[xX]\\](?: `done:)?',
+          -- we enable regex so the pattern is interpreted as a regex
+          regex = true,
+          -- no “live grep” needed here since we have a fixed pattern
+          live = false,
+          -- restrict search to the current working directory
+          dirs = { vim.fn.getcwd() },
+          -- include files ignored by .gitignore
+          args = { '--no-ignore' },
+          -- Start in normal mode
+          on_show = function() vim.cmd.stopinsert() end,
+          finder = 'grep',
+          format = 'file',
+          show_empty = true,
+          supports_live = false,
+          layout = 'ivy',
+        }
+      end,
+      desc = '[P]Search for complete tasks',
+    },
   },
   init = function()
     local Util = require 'util'
