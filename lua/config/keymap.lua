@@ -571,6 +571,30 @@ map('n', '<leader>mcw', function()
   })
 end, { ft = 'markdown', desc = '[P]Markdown convert to word' })
 
+-- Copy all HTTPS links in current buffer to clipboard (one per line) lamw26wmal
+map('n', '<leader>ml', function() Util.markdown.copy_all_hyperlinks() end, { desc = '[P]Markdown: copy all https links in buffer to clipboard' })
+
+-- If there is no `untoggled` or `done` label on an item, mark it as done
+-- and move it to the "## completed tasks" markdown heading in the same file, if
+-- the heading does not exist, it will be created, if it exists, items will be
+-- appended to it at the top lamw25wmal
+--
+-- If an item is moved to that heading, it will be added the `done` label
+map('n', '<M-x>', function() Util.markdown.task_toggle() end, { desc = "[P]Toggle task and move it to 'done'" })
+
+-- Detect todos and toggle between ":" and ";", or show a message if not found
+-- This is to "mark them as done"
+map('n', '<leader>td', function() Util.markdown.toggle_todo() end, { desc = '[P]TODO toggle item done or not' })
+
+-- Save the cursor position globally to access it across different mappings
+_G.saved_positions = {}
+
+-- Mapping to jump to the first line of the TOC
+map('n', '<leader>mm', function() Util.markdown.jump_to_toc() end, { desc = '[P]Jump to the first line of the TOC' })
+
+-- Mapping to return to the previously saved cursor position
+map('n', '<leader>mn', function() Util.markdown.jump_to_prev_cursor() end, { desc = '[P]Return to position before jumping' })
+
 -- ###########################################################################################
 -- #                                    Markdown (END)
 -- ###########################################################################################
