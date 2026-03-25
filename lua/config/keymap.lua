@@ -65,6 +65,22 @@ map('n', '<leader>K', '<cmd>norm! K<cr>', { desc = 'Keywordprg' })
 -- new file
 map('n', '<leader>fn', '<cmd>enew<cr>', { desc = 'New File' })
 
+-- Toggle executable permission on current file, previously I had 2 keymaps, to
+-- add or remove exec permissions, now it's a toggle using the same keymap
+map('n', '<leader>fx', function()
+  local file = vim.fn.expand '%'
+  local perms = vim.fn.getfperm(file)
+  local is_executable = string.match(perms, 'x', -1) ~= nil
+  local escaped_file = vim.fn.shellescape(file)
+  if is_executable then
+    vim.cmd('silent !chmod -x ' .. escaped_file)
+    vim.notify('Removed executable permission', vim.log.levels.INFO)
+  else
+    vim.cmd('silent !chmod +x ' .. escaped_file)
+    vim.notify('Added executable permission', vim.log.levels.INFO)
+  end
+end, { desc = 'Toggle executable permission' })
+
 -- Keymap to delete the current file
 map('n', '<leader>fD', function() Util.file.delete_current_file() end, { desc = '[P]Delete current file' })
 
