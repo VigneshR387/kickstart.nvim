@@ -312,6 +312,10 @@ end, {
   desc = 'Delete Markdown image',
 })
 
+-- Rename image under cursor lamw25wmal
+-- If the image is referenced multiple times in the file, it will also rename
+-- all the other occurrences in the file
+map('n', '<leader>iR', function() Util.markdown.rename_image() end, { desc = '[P]Rename image under cursor' })
 -- Keymap for folding markdown headings of level 1 or above
 map('n', 'zj', function()
   -- "Update" saves only if the buffer has been modified since the last save
