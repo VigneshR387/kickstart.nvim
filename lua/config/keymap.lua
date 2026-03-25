@@ -517,7 +517,7 @@ map('n', '<leader>ma', function() Util.markdown.create_next_n_days(1) end, { des
 map('n', '<leader>mw', function() Util.markdown.create_next_n_days(7) end, { desc = "[p]create next week's daily notes from current file" })
 
 -- create the next n daily notes (prompt) lamw26wmal
-map('n', '<leader>md', function()
+map('n', '<leader>mD', function()
   -- ask for number of days starting from tomorrow
   vim.ui.input({ prompt = 'how many days to create (starting tomorrow): ', default = '7' }, function(answer)
     -- validate empty input
