@@ -96,3 +96,23 @@ end
 vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave', 'TextChanged' }, {
   callback = function(args) refresh_markdown_codelens(args.buf) end,
 })
+
+-- Auto fold markdown headings to level 2 when markdown file is opened
+vim.api.nvim_create_autocmd('BufRead', {
+  pattern = '*.md',
+  callback = function()
+    -- Get the full path of the current file
+    local file_path = vim.fn.expand '%:p'
+    -- Ignore files in my daily note directory
+    if file_path:match(os.getenv 'HOME' .. '/github/obsidian_main/250%-daily/') then return end -- Avoid running zk multiple times for the same buffer
+    if vim.b.zk_executed then return end
+    vim.b.zk_executed = true -- Mark as executed
+    -- Use `vim.defer_fn` to add a slight delay before executing `zk`
+    vim.defer_fn(function()
+      vim.cmd 'normal zk'
+      -- This write was disabling my inlay hints
+      -- vim.cmd("silent write")
+      vim.notify('Folded keymaps', vim.log.levels.INFO)
+    end, 100) -- Delay in milliseconds (100ms should be enough)
+  end,
+})
