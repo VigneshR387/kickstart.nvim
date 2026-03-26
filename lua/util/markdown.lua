@@ -292,6 +292,57 @@ function M.toggle_bold()
   end
 end
 
+-- Function
+function M.toggle_task()
+  local current_buffer = vim.api.nvim_get_current_buf()
+
+  -- Determine row range based on mode
+  local start_row, end_row
+  local mode = vim.fn.mode()
+
+  if mode == 'v' or mode == 'V' or mode == '\22' then
+    -- Visual mode: use visual selection marks
+    start_row = vim.fn.getpos('v')[2] - 1
+    end_row = vim.fn.getpos('.')[2] - 1
+    -- Normalise in case cursor is above anchor
+    if start_row > end_row then
+      start_row, end_row = end_row, start_row
+    end
+  else
+    -- Normal mode: only the current line
+    local cursor_pos = vim.api.nvim_win_get_cursor(0)
+    start_row = cursor_pos[1] - 1
+    end_row = start_row
+  end
+
+  -- Toggle each line independently
+  for row = start_row, end_row do
+    local line = vim.api.nvim_buf_get_lines(current_buffer, row, row + 1, false)[1]
+    -- Skip empty lines
+    if line:match '^%s*$' then goto continue end
+    local new_line
+
+    if line:match '^%s*%-%s%[x%]' then
+      -- [x] → [ ]
+      new_line = line:gsub('^(%s*%-%s)%[x%]', '%1[ ]')
+    elseif line:match '^%s*%-%s%[%s%]' then
+      -- [ ] → plain bullet
+      new_line = line:gsub('^(%s*%-%s)%[%s%]%s?', '%1')
+    elseif line:match '^%s*%-%s' then
+      -- plain bullet → [ ]
+      new_line = line:gsub('^(%s*%-%s)', '%1[ ] ')
+    else
+      -- bare text → - [ ]
+      new_line = '- [ ] ' .. line
+    end
+    vim.api.nvim_buf_set_lines(current_buffer, row, row + 1, false, { new_line })
+    ::continue::
+  end
+
+  -- Exit visual mode after applying
+  if mode == 'v' or mode == 'V' or mode == '\22' then vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, false, true), 'n', false) end
+end
+
 function M.multiline_toggle_bold()
   local cursor_pos = vim.api.nvim_win_get_cursor(0)
   local current_buffer = vim.api.nvim_get_current_buf()
