@@ -424,6 +424,15 @@ map('v', '<leader>mb', function() Util.markdown.toggle_bold() end, { ft = 'markd
 -- -- first line
 map('n', '<leader>mb', function() Util.markdown.multiline_toggle_bold() end, { ft = 'markdown', desc = '[P]BOLD toggle bold markers' })
 
+-- Remap 'gss' to 'gsa`' in visual mode
+-- This surrounds with inline code, that I use a lot lamw25wmal
+map('v', 'gss', function()
+  -- Use nvim_replace_termcodes to handle special characters like backticks
+  local keys = vim.api.nvim_replace_termcodes('gsa`', true, false, true)
+  -- Feed the keys in visual mode ('x' for visual mode)
+  vim.api.nvim_feedkeys(keys, 'x', false)
+end, { desc = '[P] Surround selection with backticks (inline code)' })
+
 -- Show spelling suggestions / spell suggestions
 -- NOTE: I changed this to accept the first spelling suggestion
 map('n', '<leader>mss', function()
