@@ -406,6 +406,9 @@ map(
 -- "d" is for "dash" lamw25wmal
 map('n', '<leader>md', function() Util.markdown.toggle_bullet() end, { ft = 'markdown', desc = '[P]Toggle bullet point (dash)' })
 
+-- Toggle task
+map({ 'n', 'v' }, '<leader>mt', function() Util.markdown.toggle_task() end, { ft = 'markdown', desc = '[P]Toggle task checkbox' })
+
 -- In visual mode, check if the selected text is already striked through and show a message if it is
 -- If not, surround it
 map('v', '<leader>mx', function() Util.markdown.toggle_strikethrough() end, { ft = 'markdown', desc = '[P]Strike through current selection' })
