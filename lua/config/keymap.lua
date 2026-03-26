@@ -396,8 +396,8 @@ end, { ft = 'markdown', desc = '[P]Unfold all headings level 2 or above' })
 -- Keymap for  Generating/Updating TOC (markdown-toc)
 map(
   'n',
-  '<leader>mt',
-  function() Util.markdown.update_markdown_toc('## Contents', '### Table of contents') end,
+  '<leader>mT',
+  function() Util.markdown.update_markdown_toc('## Contents', '### Table of Contents') end,
   { ft = 'markdown', desc = '[P]Insert/update Markdown TOC' }
 )
 
