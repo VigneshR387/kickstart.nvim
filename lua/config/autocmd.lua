@@ -116,3 +116,33 @@ vim.api.nvim_create_autocmd('BufRead', {
     end, 100) -- Delay in milliseconds (100ms should be enough)
   end,
 })
+
+-- Auto setup folding for markdown
+-- Checks each line to see if it matches a markdown heading (#, ##, etc.):
+-- It’s called implicitly by Neovim’s folding engine by vim.opt_local.foldexpr
+function _G.markdown_foldexpr()
+  local lnum = vim.v.lnum
+  local line = vim.fn.getline(lnum)
+  local heading = line:match '^(#+)%s'
+  if heading then
+    local level = #heading
+    if level == 1 then
+      -- Special handling for H1
+      if lnum == 1 then
+        return '>1'
+      else
+        local frontmatter_end = vim.b.frontmatter_end
+        if frontmatter_end and (lnum == frontmatter_end + 1) then return '>1' end
+      end
+    elseif level >= 2 and level <= 6 then
+      -- Regular handling for H2-H6
+      return '>' .. level
+    end
+  end
+  return '='
+end
+-- Use autocommand to apply only to markdown files
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'markdown',
+  callback = Util.markdown.set_markdown_folding,
+})

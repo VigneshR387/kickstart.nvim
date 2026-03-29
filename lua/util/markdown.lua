@@ -1098,4 +1098,26 @@ function M.jump_to_prev_cursor()
   local pos = _G.saved_positions['toc_return']
   if pos then vim.api.nvim_win_set_cursor(0, pos) end
 end
+
+function M.set_markdown_folding()
+  vim.opt_local.foldmethod = 'expr'
+  vim.opt_local.foldexpr = 'v:lua.markdown_foldexpr()'
+  vim.opt_local.foldlevel = 99
+
+  -- Detect frontmatter closing line
+  local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+  local found_first = false
+  local frontmatter_end = nil
+  for i, line in ipairs(lines) do
+    if line == '---' then
+      if not found_first then
+        found_first = true
+      else
+        frontmatter_end = i
+        break
+      end
+    end
+  end
+  vim.b.frontmatter_end = frontmatter_end
+end
 return M
