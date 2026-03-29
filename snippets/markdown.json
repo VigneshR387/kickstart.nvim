@@ -1,10 +1,14 @@
 {
+  "mdlink": {
+    "body": "[${1:text}](${2:target})",
+    "prefix": "mdlink"
+  },
   "ts": {
     "body": [
       "```typescript",
       "${1:}",
       "```"
     ],
-    "prefix": "typescript"
+    "prefix": "typs"
   }
 }
