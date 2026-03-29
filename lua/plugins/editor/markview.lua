@@ -13,6 +13,17 @@ return {
     require('markview.extras.headings').setup()
 
     require('markview').setup {
+      preview = {
+        enable = true,
+
+        enable_hybrid_mode = true,
+        -- `raw_preview` causes elements to render both raw text and rendered preview for elements not included in the list.
+        --  issue: https://github.com/OXY2DEV/markview.nvim/issues/487
+        -- raw_previews = {
+        --   markdown = { 'headings' },
+        -- },
+        hybrid_modes = { 'n' },
+      },
       markdown = {
         -- headings = presets.headings.glow_center,
 
