@@ -20,4 +20,9 @@ return {
       },
     }
   end,
+  keys = {
+    { '<leader>mhi', '<cmd>Heading increase<CR>', desc = 'Heading Increase (markview)' },
+
+    { '<leader>mhd', '<cmd>Heading decrease<CR>', desc = 'Heading Increase (markview)' },
+  },
 }
