@@ -47,7 +47,7 @@ MD007: false
 # https://github.com/DavidAnson/markdownlint/blob/main/doc/md013.md
 # MD013: false
 MD013:
-  # code_blocks: false
+  code_blocks: false
   # headings: false
   tables: false
 
