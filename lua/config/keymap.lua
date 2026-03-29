@@ -331,7 +331,9 @@ map('n', '<leader>iR', function() Util.markdown.rename_image() end, { desc = '[P
 map('n', 'zj', function()
   -- "Update" saves only if the buffer has been modified since the last save
   vim.cmd 'silent update'
-  -- map("n", "<leader>mfj", function()
+  -- vim.keymap.set("n", "<leader>mfj", function()
+  -- Reloads the file to refresh folds, otheriise you have to re-open neovim
+  vim.cmd 'edit!'
   -- Unfold everything first or I had issues
   vim.cmd 'normal! zR'
   Util.markdown.fold_markdown_headings { 6, 5, 4, 3, 2, 1 }
@@ -341,17 +343,24 @@ end, { ft = 'markdown', desc = '[P]Fold all headings level 1 or above' })
 -- Keymap for folding markdown headings of level 2 or above
 -- I know, it reads like "madafaka" but "k" for me means "2"
 map('n', 'zk', function()
+  -- "Update" saves only if the buffer has been modified since the last save
   vim.cmd 'silent update'
+  -- vim.keymap.set("n", "<leader>mfk", function()
+  -- Reloads the file to refresh folds, otherwise you have to re-open neovim
+  vim.cmd 'edit!'
+  -- Unfold everything first or I had issues
   vim.cmd 'normal! zR'
   Util.markdown.fold_markdown_headings { 6, 5, 4, 3, 2 }
-  vim.cmd 'normal! zz'
+  vim.cmd 'normal! zz' -- center the cursor line on screen
 end, { ft = 'markdown', desc = '[P]Fold all headings level 2 or above' })
 
 -- Keymap for folding markdown headings of level 3 or above
 map('n', 'zl', function()
   -- "Update" saves only if the buffer has been modified since the last save
   vim.cmd 'silent update'
-  -- map("n", "<leader>mfl", function()
+  -- vim.keymap.set("n", "<leader>mfl", function()
+  -- Reloads the file to refresh folds, otherwise you have to re-open neovim
+  vim.cmd 'edit!'
   -- Unfold everything first or I had issues
   vim.cmd 'normal! zR'
   Util.markdown.fold_markdown_headings { 6, 5, 4, 3 }
@@ -362,7 +371,9 @@ end, { ft = 'markdown', desc = '[P]Fold all headings level 3 or above' })
 map('n', 'z;', function()
   -- "Update" saves only if the buffer has been modified since the last save
   vim.cmd 'silent update'
-  -- map("n", "<leader>mf;", function()
+  -- vim.keymap.set("n", "<leader>mf;", function()
+  -- Reloads the file to refresh folds, otherwise you have to re-open neovim
+  vim.cmd 'edit!'
   -- Unfold everything first or I had issues
   vim.cmd 'normal! zR'
   Util.markdown.fold_markdown_headings { 6, 5, 4 }
@@ -388,9 +399,13 @@ end, { desc = '[P]Toggle fold' })
 -- Changed all the markdown folding and unfolding keymaps from <leader>mfj to
 -- zj, zk, zl, z; and zu respectively lamw25wmal
 map('n', 'zu', function()
+  -- "Update" saves only if the buffer has been modified since the last save
   vim.cmd 'silent update'
-  vim.cmd 'normal! zR'
-  vim.cmd 'normal! zz'
+  -- vim.keymap.set("n", "<leader>mfu", function()
+  -- Reloads the file to reflect the changes
+  vim.cmd 'edit!'
+  vim.cmd 'normal! zR' -- Unfold all headings
+  vim.cmd 'normal! zz' -- center the cursor line on screen
 end, { ft = 'markdown', desc = '[P]Unfold all headings level 2 or above' })
 
 -- Keymap for  Generating/Updating TOC (markdown-toc)
