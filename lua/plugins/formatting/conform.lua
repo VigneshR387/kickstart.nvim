@@ -46,6 +46,7 @@ return {
       ['markdown.mdx'] = { 'prettierd', 'markdownlint-cli2', 'markdown-toc' },
       python = { 'ruff' },
       json = { 'jq' },
+      typescript = { 'biome' },
     },
   },
 
