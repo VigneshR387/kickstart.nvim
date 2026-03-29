@@ -9,9 +9,14 @@ return {
   enabled = true,
   event = 'LazyFile',
   opts = function()
+    local presets = require 'markview.presets'
+    require('markview.extras.headings').setup()
+
     require('markview').setup {
       markdown = {
-        headings = { presets = { headings = glow } },
+        -- headings = presets.headings.glow_center,
+
+        tables = presets.tables.rounded,
       },
     }
   end,
