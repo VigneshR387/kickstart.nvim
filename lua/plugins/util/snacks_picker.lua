@@ -85,6 +85,15 @@ return {
       -- -- You can confirm in your teminal lamw26wmal with:
       '<leader>tt',
       function()
+        local root = Util.root.get()
+        local exclude_dirs = {
+          'Templates',
+          'node_modules',
+          '.git',
+          'dist',
+          'build',
+        }
+        local exclude_patterns = vim.tbl_map(function(dir) return '**/' .. dir .. '/**' end, exclude_dirs)
         Snacks.picker.grep {
           prompt = ' ',
           -- pass your desired search as a static pattern
@@ -94,9 +103,10 @@ return {
           -- no “live grep” needed here since we have a fixed pattern
           live = false,
           -- restrict search to the current working directory
-          dirs = { vim.fn.getcwd() },
+          dirs = { root },
           -- I want to filter this to only show markdown files
           glob = '*.md',
+          exclude = exclude_patterns,
           -- include files ignored by .gitignore
           args = { '--no-ignore' },
           -- Start in normal mode
@@ -114,6 +124,15 @@ return {
     {
       '<leader>tc',
       function()
+        local root = Util.root.get()
+        local exclude_dirs = {
+          'Templates',
+          'node_modules',
+          '.git',
+          'dist',
+          'build',
+        }
+        local exclude_patterns = vim.tbl_map(function(dir) return '**/' .. dir .. '/**' end, exclude_dirs)
         Snacks.picker.grep {
           prompt = ' ',
           -- pass your desired search as a static pattern
@@ -124,7 +143,9 @@ return {
           -- no “live grep” needed here since we have a fixed pattern
           live = false,
           -- restrict search to the current working directory
-          dirs = { vim.fn.getcwd() },
+          dirs = { root },
+          -- exclude directories
+          exclude = exclude_patterns,
           -- include files ignored by .gitignore
           args = { '--no-ignore' },
           -- Start in normal mode
