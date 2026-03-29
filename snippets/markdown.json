@@ -3,6 +3,10 @@
     "body": "[${1:text}](${2:target})",
     "prefix": "mdlink"
   },
+  "oblink": {
+    "body": "[[${1:Link}]]",
+    "prefix": "oblink"
+  },
   "ts": {
     "body": [
       "```typescript",
