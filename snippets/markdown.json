@@ -1,0 +1,10 @@
+{
+  "ts": {
+    "body": [
+      "```typescript",
+      "${1:}",
+      "```"
+    ],
+    "prefix": "typescript"
+  }
+}

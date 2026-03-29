@@ -1,17 +1,21 @@
 {
-	"contributes": {
-		"snippets": [
-			
-			{
-				"language": "lua",
-				"path": "./lua.json"
-			},
-			
-			{
-				"language": "all",
-				"path": "./allFiletypes.json"
-			}
-		]
-	},
-	"name": "my-snippets"
+  "contributes": {
+    "snippets": [
+      {
+        "language": "lua",
+        "path": "./lua.json"
+      },
+      {
+        "language": "all",
+        "path": "./allFiletypes.json"
+      },
+      {
+        "language": [
+          "markdown"
+        ],
+        "path": "./markdown.json"
+      }
+    ]
+  },
+  "name": "my-snippets"
 }
