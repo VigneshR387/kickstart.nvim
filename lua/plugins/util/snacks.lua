@@ -58,6 +58,32 @@ return {
     input = {
       enabled = true,
     },
+
+    image = {
+      enabled = true,
+      doc = {
+        enabled = true,
+        inline = false,
+        -- render the image in a floating window
+        -- only used if `opts.inline` is disabled
+        float = true,
+        -- Sets the size of the image
+        -- max_width = 60,
+        -- max_width = vim.g.neovim_mode == "skitty" and 20 or 60,
+        -- max_height = vim.g.neovim_mode == "skitty" and 10 or 30,
+        max_width = 60,
+        max_height = 30,
+        -- Apparently, all the images that you preview in neovim are converted
+        -- to .png and they're cached, original image remains the same, but
+        -- the preview you see is a png converted version of that image
+        --
+        -- Where are the cached images stored?
+        -- This path is found in the docs
+        -- :lua print(vim.fn.stdpath("cache") .. "/snacks/image")
+        -- For me returns `~/.cache/neobean/snacks/image`
+        -- Go 1 dir above and check `sudo du -sh ./* | sort -hr | head -n 5`
+      },
+    },
     notifier = { enabled = false },
     quickfile = {
       enabled = true,
