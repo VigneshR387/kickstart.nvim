@@ -16,6 +16,7 @@ return {
           'bash-language-server',
           'markdown-oxide',
           'harper-ls',
+          'vtsls',
           -- linters
           'eslint_d',
           'shellcheck',
