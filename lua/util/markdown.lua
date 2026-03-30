@@ -464,7 +464,7 @@ function M.create_daily_note(date_line)
   if vim.fn.filereadable(full_path) == 0 then
     local file = io.open(full_path, 'w')
     if file then
-      file:write '# Contents\n\n<!-- toc -->\n\n- [Daily note](#daily-note)\n\n<!-- tocstop -->\n\n## Daily note\n'
+      file:write '# Contents\n\n<!-- toc -->\n\n- [Daily Note](#daily-note)\n\n<!-- tocstop -->\n\n## Daily Note\n'
       file:close()
       vim.cmd('edit ' .. vim.fn.fnameescape(full_path))
       vim.cmd 'bd!'
