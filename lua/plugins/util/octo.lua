@@ -1,6 +1,6 @@
 return {
   -- depends on blink-cmp-git for completion
-  { import = 'plugins.editor.blink-cmp-git' },
+  { import = 'plugins.editor.blink-cmp' },
 
   {
     'folke/snacks.nvim',
