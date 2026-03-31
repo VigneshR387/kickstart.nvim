@@ -464,7 +464,7 @@ end, { ft = 'markdown', desc = '[P]Spelling suggestions' })
 
 -- markdown good, accept spell suggestion
 -- Add word under the cursor as a good word
-map('n', '<leader>msg', function()
+map('n', '<leader>msa', function()
   vim.cmd 'normal! zg'
   -- I do a write so that harper is updated
   vim.cmd 'silent write'
