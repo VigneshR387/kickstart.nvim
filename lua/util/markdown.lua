@@ -497,7 +497,7 @@ function M.create_next_n_days(n)
   local base_ts = os.time { year = y, month = m, day = d }
   for i = 1, n do
     local t = os.date('*t', base_ts + 86400 * i)
-    local link = string.format('[[%04d-%02d-%02d-%s]]', t.year, t.month, t.day, os.date('%a', os.time { year = t.year, month = t.month, day = t.day }))
+    local link = string.format('[[%04d-%02d-%02d-%s]]', t.year, t.month, t.day, os.date('%A', os.time { year = t.year, month = t.month, day = t.day }))
     M.create_daily_note(link)
   end
 end
