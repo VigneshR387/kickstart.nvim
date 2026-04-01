@@ -100,6 +100,8 @@ map('x', '>', '>gv')
 -- quit
 map('n', '<leader>qq', '<cmd>qa<cr>', { desc = 'Quit All' })
 
+map('t', '<C-space>', '<C-\\><C-n><C-w>h', { silent = true })
+
 -- buffers
 map('n', '<S-h>', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })
 map('n', '<S-l>', '<cmd>bnext<cr>', { desc = 'Next Buffer' })
@@ -446,6 +448,18 @@ map('v', 'gss', function()
   local keys = vim.api.nvim_replace_termcodes('gsa`', true, false, true)
   -- Feed the keys in visual mode ('x' for visual mode)
   vim.api.nvim_feedkeys(keys, 'x', false)
+end, { desc = '[P] Surround selection with backticks (inline code)' })
+
+-- This surrounds CURRENT WORD with inline code in NORMAL MODE lamw25wmal
+map('n', 'gss', function()
+  -- Use nvim_replace_termcodes to handle special characters like backticks
+  local keys = vim.api.nvim_replace_termcodes('gsaiw`', true, false, true)
+  -- Feed the keys in visual mode ('x' for visual mode)
+  vim.api.nvim_feedkeys(keys, 'x', false)
+  -- I tried these 3, but they didn't work, I assume because of the backtick character
+  -- vim.cmd("normal! gsa`")
+  -- vim.cmd([[normal! gsa`]])
+  -- vim.cmd("normal! gsa\\`")
 end, { desc = '[P] Surround selection with backticks (inline code)' })
 
 -- Show spelling suggestions / spell suggestions
