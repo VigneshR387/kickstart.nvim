@@ -17,6 +17,7 @@ return {
           'markdown-oxide',
           'harper-ls',
           'vtsls',
+          'taplo',
           -- linters
           'eslint_d',
           'shellcheck',
