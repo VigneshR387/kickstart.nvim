@@ -156,6 +156,13 @@ return {
           })
         end,
       },
+      taplo = {
+        schema = {
+          associations = {
+            ['.*sesh\\.toml$'] = 'https://github.com/joshmedeski/sesh/raw/main/sesh.schema.json',
+          },
+        },
+      },
     }
     for name, server in pairs(servers) do
       vim.lsp.config(name, server)
