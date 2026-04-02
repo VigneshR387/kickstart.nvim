@@ -47,6 +47,7 @@ return {
       python = { 'ruff' },
       json = { 'jq' },
       typescript = { 'biome' },
+      toml = { 'taplo' },
     },
   },
 
