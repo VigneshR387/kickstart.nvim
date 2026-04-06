@@ -33,30 +33,44 @@ return { -- Autocompletion
       -- <c-k>: Toggle signature help
       --
       -- See :h blink-cmp-config-keymap for defining your own keymap
-      preset = 'enter',
-      ['<S-Tab>'] = { 'select_prev', 'fallback' },
-      ['<Tab>'] = { 'select_next', 'fallback' },
-
-      ['<Up>'] = false,
-      ['<Down>'] = false,
-      -- disable a keymap from the preset
-      ['<C-e>'] = false, -- or {}
-
-      -- show with a list of providers
-      ['<C-space>'] = { function(cmp) cmp.show { providers = { 'snippets' } } end },
-
-      -- control whether the next command will be run when using a function
-      ['<C-n>'] = {
-        function(cmp)
-          if some_condition then return end -- runs the next command
-          if some_other_condition then return 'a' end -- simulate keypresses, doesn't run the next command
-          return true -- doesn't run the next command
-        end,
-        'select_next',
-      },
-
+      preset = 'default',
+      -- ['<S-Tab>'] = { 'select_prev', 'fallback' },
+      -- ['<Tab>'] = { 'select_next', 'fallback' },
+      --
+      -- ['<Up>'] = false,
+      -- ['<Down>'] = false,
+      -- -- disable a keymap from the preset
+      -- ['<C-e>'] = false, -- or {}
+      --
+      -- -- show with a list of providers
+      -- ['<C-space>'] = { function(cmp) cmp.show { providers = { 'snippets' } } end },
+      --
+      -- -- control whether the next command will be run when using a function
+      -- ['<C-n>'] = {
+      --   function(cmp)
+      --     if some_condition then return end -- runs the next command
+      --     if some_other_condition then return 'a' end -- simulate keypresses, doesn't run the next command
+      --     return true -- doesn't run the next command
+      --   end,
+      --   'select_next',
+      -- },
+      --
       -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
       --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
+      --
+      --Keymap v2
+      ['<c-x>'] = { 'show', 'show_documentation', 'hide_documentation' },
+      ['<c-e>'] = { 'cancel', 'fallback' },
+      ['<tab>'] = {
+        'accept',
+        'snippet_forward',
+        'fallback',
+      },
+      ['<c-y>'] = { 'select_and_accept', 'fallback' },
+      ['<c-k>'] = { 'select_prev', 'fallback' },
+      ['<up>'] = { 'select_prev', 'fallback' },
+      ['<c-j>'] = { 'select_next', 'fallback' },
+      ['<down>'] = { 'select_next', 'fallback' },
     },
 
     appearance = {
