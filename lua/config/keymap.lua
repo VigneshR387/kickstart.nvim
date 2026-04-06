@@ -613,7 +613,7 @@ map('n', '<leader>mcw', function()
 end, { ft = 'markdown', desc = '[P]Markdown convert to word' })
 
 -- Copy all HTTPS links in current buffer to clipboard (one per line) lamw26wmal
-map('n', '<leader>ml', function() Util.markdown.copy_all_hyperlinks() end, { desc = '[P]Markdown: copy all https links in buffer to clipboard' })
+map('n', '<leader>mL', function() Util.markdown.copy_all_hyperlinks() end, { desc = '[P]Markdown: copy all https links in buffer to clipboard' })
 
 -- If there is no `untoggled` or `done` label on an item, mark it as done
 -- and move it to the "## completed tasks" markdown heading in the same file, if
@@ -687,6 +687,8 @@ vim.keymap.set({ 'n', 'v' }, 'gj', function()
   -- Clear the search highlight
   vim.cmd 'nohlsearch'
 end, { desc = '[P]Go to next markdown header' })
+
+map({ 'n', 'v' }, '<leader>ml', function() Util.markdown.convert_to_wiki_link() end, { desc = 'Convert to Wiki Link' })
 -- ###########################################################################################
 -- #                                    Markdown (END)
 -- ###########################################################################################

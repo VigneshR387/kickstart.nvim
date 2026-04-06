@@ -1120,4 +1120,60 @@ function M.set_markdown_folding()
   end
   vim.b.frontmatter_end = frontmatter_end
 end
+
+function M.convert_to_wiki_link()
+  -- `vim.fn.mode()` returns the current mode:
+  -- 'v' = visual char, 'V' = visual line, '\22' = visual block
+  local mode = vim.fn.mode()
+
+  if mode == 'v' or mode == 'V' then
+    -- VISUAL MODE: wrap the selected text
+
+    -- Exit visual mode first so marks '< and '> are set correctly
+    -- '<ESC>' is sent as a keypress to update the selection marks
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<ESC>', true, false, true), 'x', false)
+
+    -- '< and '> are marks Neovim sets at the start/end of last visual selection
+    local start_pos = vim.fn.getpos "'<" -- { bufnum, line, col, offset }
+    local end_pos = vim.fn.getpos "'>"
+
+    local line_num = start_pos[2] - 1 -- convert to 0-indexed for nvim_buf API
+    local col_start = start_pos[3] - 1 -- 0-indexed col
+    local col_end = end_pos[3] -- end is exclusive, so no -1
+
+    -- Read the exact selected text from the buffer
+    local line = vim.api.nvim_buf_get_lines(0, line_num, line_num + 1, false)[1]
+    local selected = line:sub(col_start + 1, col_end) -- Lua strings are 1-indexed
+
+    -- Replace the selected region with [[selected]]
+    local replacement = '[[' .. selected .. ']]'
+    vim.api.nvim_buf_set_text(0, line_num, col_start, line_num, col_end, { replacement })
+  else
+    local word = vim.fn.expand '<cword>'
+    if word == '' then return end
+
+    local cursor = vim.api.nvim_win_get_cursor(0)
+    local row = cursor[1] - 1
+    local col = cursor[2]
+
+    local line = vim.api.nvim_buf_get_lines(0, row, row + 1, false)[1]
+
+    -- walk left
+    local word_start = col
+    while word_start > 0 and line:sub(word_start, word_start):match "[%w'-]" do
+      word_start = word_start - 1
+    end
+    if not line:sub(word_start + 1, word_start + 1):match "[%w'-]" then word_start = word_start + 1 end
+
+    -- walk right, stop at last matching char (word_end is inclusive)
+    local word_end = col + 1
+    while word_end <= #line and line:sub(word_end, word_end):match "[%w'-]" do
+      word_end = word_end + 1
+    end
+    word_end = word_end - 1 -- make it inclusive
+
+    local replacement = '[[' .. line:sub(word_start + 1, word_end) .. ']]'
+    vim.api.nvim_buf_set_text(0, row, word_start, row, word_end, { replacement })
+  end
+end
 return M
