@@ -90,7 +90,7 @@ local function refresh_markdown_codelens(bufnr)
   if vim.bo[bufnr].buftype ~= '' then return end
   if vim.bo[bufnr].filetype ~= 'markdown' then return end
   if not codelens_supported(bufnr) then return end
-  vim.lsp.codelens.refresh { bufnr = bufnr }
+  vim.lsp.codelens.enable(true, { bufnr = bufnr })
 end
 -- Create markdown-only codelens refresh triggers
 vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave', 'TextChanged' }, {
