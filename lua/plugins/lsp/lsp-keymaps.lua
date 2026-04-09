@@ -76,7 +76,7 @@ return {
           map('<a-p>', function() Snacks.words.jump(-vim.v.count1, true) end, 'Prev Reference')
 
           -- FIX: Using Snacks.words to handle the autocommands instead.
-          if not Snacks.words.is_enabled(event.buf) then Snacks.words.enable(event.buf) end
+          if not Snacks.words.is_enabled(event.buf) then Snacks.words.enable() end
         end
       end,
     })
