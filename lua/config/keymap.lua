@@ -195,9 +195,8 @@ map('n', '<leader><tab>[', '<cmd>tabprevious<cr>', { desc = 'Previous Tab' })
 -- floating terminal
 map('n', '<leader>fT', function() Snacks.terminal() end, { desc = 'Terminal (cwd)' })
 map('n', '<leader>ft', function() Snacks.terminal(nil, { cwd = root() }) end, { desc = 'Terminal (Root Dir)' })
-map({ 'n', 't' }, '<c-/>', function() Snacks.terminal(nil, { cwd = root() }) end, { desc = 'Terminal (Root Dir)' })
-map({ 'n', 't' }, '<c-_>', function() Snacks.terminal(nil, { cwd = root() }) end, { desc = 'which_key_ignore' })
-
+map({ 'n', 't' }, '<c-/>', function() Snacks.terminal.focus(nil, { cwd = Util.root() }) end, { desc = 'Terminal (Root Dir)' })
+map({ 'n', 't' }, '<c-_>', function() Snacks.terminal.focus(nil, { cwd = Util.root() }) end, { desc = 'which_key_ignore' })
 -- -- location list
 map('n', '<leader>xl', function()
   local success, err = pcall(vim.fn.getloclist(0, { winid = 0 }).winid ~= 0 and vim.cmd.lclose or vim.cmd.lopen)
