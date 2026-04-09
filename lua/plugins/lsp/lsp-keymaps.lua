@@ -36,7 +36,7 @@ return {
         map('<leader>cl', function() Snacks.picker.lsp_config() end, 'Lsp Info')
         map('<leader>ca', vim.lsp.buf.code_action, 'Code Action', { 'n', 'x' })
         map('<leader>cc', vim.lsp.codelens.run, 'Run Codelens', { 'n', 'x' })
-        map('<leader>cC', vim.lsp.codelens.refresh, 'Refresh & Display Codelens', { 'n' })
+        map('<leader>cC', vim.lsp.codelens.enable, 'Refresh & Display Codelens', { 'n' })
         map('<leader>cR', function() Snacks.rename.rename_file() end, 'Rename File', 'n')
         map('<leader>cr', vim.lsp.buf.rename, 'Rename')
         -- The following two autocommands are used to highlight references of the
