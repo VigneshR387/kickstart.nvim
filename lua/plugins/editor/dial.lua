@@ -142,6 +142,11 @@ return {
         },
         markdown = {
           augend.constant.new {
+            elements = { 'low', 'medium', 'high' },
+            word = true,
+            cyclic = true,
+          },
+          augend.constant.new {
             elements = { '[ ]', '[x]' },
             word = false,
             cyclic = true,
