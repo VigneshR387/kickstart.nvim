@@ -1,4 +1,8 @@
 {
+  ".task": {
+    "body": "- □ ${1:Task} @priority(${2:medium})",
+    "prefix": ".task"
+  },
   "mdlink": {
     "body": "[${1:text}](${2:target})",
     "prefix": "mdlink"
