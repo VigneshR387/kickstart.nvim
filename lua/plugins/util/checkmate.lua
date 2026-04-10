@@ -209,6 +209,185 @@ return {
         on_remove = function(todo) require('checkmate').set_todo_state(todo, 'unchecked') end,
         sort_order = 30,
       },
+      -- Due metadata (include time)
+      -- due = {
+      --   key = '<leader>Td',
+      --   sort_order = 10,
+      --
+      --   -- Default: tomorrow at 9:00 AM
+      --   get_value = function()
+      --     local t = os.date '*t'
+      --     t.day = t.day + 1
+      --     t.hour = 9
+      --     t.min = 0
+      --     t.sec = 0
+      --     return os.date('%m/%d/%y %H:%M', os.time(t))
+      --   end,
+      --
+      --   jump_to_on_insert = 'value',
+      --   select_on_insert = true,
+      --
+      --   -- Preset choices with time baked in
+      --   choices = function(_, callback)
+      --     local function fmt(offset_days, hour)
+      --       local t = os.date '*t'
+      --       t.day = t.day + offset_days
+      --       t.hour = hour or 9
+      --       t.min = 0
+      --       t.sec = 0
+      --       return os.date('%m/%d/%y %H:%M', os.time(t))
+      --     end
+      --
+      --     -- NOTE: PICK ONE OF THE SETUP
+      --     local n = 14 -- how many days out
+      --     local times = { 9, 12, 17 }
+      --     local items = {}
+      --
+      --     for day = 0, n do
+      --       for _, hour in ipairs(times) do
+      --         table.insert(items, fmt(day, hour))
+      --       end
+      --     end
+      --
+      --     callback(items)
+      --     -- callback {
+      --     --   fmt(0, 9), -- today 9 AM
+      --     --   fmt(0, 12), -- today noon
+      --     --   fmt(0, 17), -- today 5 PM
+      --     --   fmt(1, 9), -- tomorrow 9 AM
+      --     --   fmt(1, 17), -- tomorrow 5 PM
+      --     --   fmt(3, 9), -- in 3 days
+      --     --   fmt(7, 9), -- next week
+      --     --   fmt(14, 9), -- in 2 weeks
+      --     --   fmt(30, 9), -- in a month
+      --     -- }
+      --   end,
+      --
+      --   -- Urgency now accounts for hours, not just days
+      --   style = function(context)
+      --     local value = context.value or ''
+      --
+      --     -- Parse MM/DD/YY HH:MM (time is optional)
+      --     local m, d, y, h, min = value:match '^(%d+)/(%d+)/(%d+) (%d+):(%d+)$'
+      --
+      --     -- Fall back to date-only if no time component
+      --     if not m then
+      --       m, d, y = value:match '^(%d+)/(%d+)/(%d+)$'
+      --       h, min = 23, 59
+      --     end
+      --
+      --     if not m then
+      --       return { fg = '#8be9fd' } -- unparseable → fallback blue
+      --     end
+      --
+      --     local due_ts = os.time {
+      --       year = 2000 + tonumber(y),
+      --       month = tonumber(m),
+      --       day = tonumber(d),
+      --       hour = tonumber(h),
+      --       min = tonumber(min),
+      --       sec = 0,
+      --     }
+      --
+      --     local now = os.time()
+      --     local hours_until = (due_ts - now) / 3600
+      --
+      --     if hours_until < 0 then
+      --       return { fg = '#ff5555', bold = true, italic = true } -- overdue
+      --     elseif hours_until < 2 then
+      --       return { fg = '#ff5555', bold = true } -- due within 2 hours
+      --     elseif hours_until < 24 then
+      --       return { fg = '#ffb86c', bold = true } -- due today
+      --     elseif hours_until < 72 then
+      --       return { fg = '#f1fa8c' } -- within 3 days
+      --     else
+      --       return { fg = '#50fa7b' } -- future
+      --     end
+      --   end,
+      -- },
+      -- Due (only date)
+      due = {
+        key = '<leader>Td',
+        sort_order = 10, -- show @due first among metadata tags
+
+        -- Default value: tomorrow's date at midnight
+        get_value = function()
+          local t = os.date '*t'
+          t.day = t.day + 1
+          t.hour = 0
+          t.min = 0
+          t.sec = 0
+          return os.date('%m/%d/%y', os.time(t))
+        end,
+
+        -- Jump into the value and select it so you can type a new date immediately
+        jump_to_on_insert = 'value',
+        select_on_insert = true,
+
+        -- Preset choices for quick selection via :Checkmate metadata select_value
+        choices = function(_, callback)
+          -- Dynamic choices: resolved at selection time
+          local function fmt(offset_days)
+            local t = os.date '*t'
+            t.day = t.day + offset_days
+            t.hour = 0
+            t.min = 0
+            t.sec = 0
+            return os.date('%m/%d/%y', os.time(t))
+          end
+          -- NOTE:  LOOP DAYS OR SET PREDEFINED  (CHOOSE ONE)
+
+          local items = {}
+          for i = 0, 14 do
+            table.insert(items, fmt(i))
+          end
+          callback(items)
+
+          -- callback {
+          --   fmt(0), -- today
+          --   fmt(1), -- tomorrow
+          --   fmt(3), -- in 3 days
+          --   fmt(7), -- next week
+          --   fmt(14), -- in 2 weeks
+          --   fmt(30), -- in a month
+          -- }
+        end,
+
+        -- Color based on urgency: overdue = red, today = orange, soon = yellow, future = green
+        style = function(context)
+          local value = context.value or ''
+
+          -- Parse MM/DD/YY
+          local m, d, y = value:match '^(%d+)/(%d+)/(%d+)$'
+          if not m then
+            return { fg = '#8be9fd' } -- unparseable → default blue
+          end
+
+          local due_ts = os.time {
+            year = 2000 + tonumber(y),
+            month = tonumber(m),
+            day = tonumber(d),
+            hour = 23,
+            min = 59,
+            sec = 59,
+          }
+
+          local now = os.time()
+          local days_until = (due_ts - now) / 86400
+
+          if days_until < 0 then
+            return { fg = '#ff5555', bold = true, italic = true } -- overdue: red + italic
+          elseif days_until < 1 then
+            return { fg = '#ff5555', bold = true } -- due today: red bold
+          elseif days_until <= 3 then
+            return { fg = '#ffb86c', bold = true } -- due soon: orange
+          elseif days_until <= 7 then
+            return { fg = '#f1fa8c' } -- this week: yellow
+          else
+            return { fg = '#50fa7b' } -- future: green
+          end
+        end,
+      },
     },
     archive = {
       heading = {
