@@ -620,11 +620,11 @@ map('n', '<leader>mL', function() Util.markdown.copy_all_hyperlinks() end, { des
 -- appended to it at the top lamw25wmal
 --
 -- If an item is moved to that heading, it will be added the `done` label
-map('n', '<M-x>', function() Util.markdown.task_toggle() end, { desc = "[P]Toggle task and move it to 'done'" })
+-- map('n', '<M-x>', function() Util.markdown.task_toggle() end, { desc = "[P]Toggle task and move it to 'done'" })
 
 -- Detect todos and toggle between ":" and ";", or show a message if not found
 -- This is to "mark them as done"
-map('n', '<leader>td', function() Util.markdown.toggle_todo() end, { desc = '[P]TODO toggle item done or not' })
+map('n', '<leader>tT', function() Util.markdown.toggle_todo() end, { desc = '[P]TODO toggle item done or not' })
 
 -- Save the cursor position globally to access it across different mappings
 _G.saved_positions = {}

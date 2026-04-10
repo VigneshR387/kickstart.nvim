@@ -83,7 +83,7 @@ return {
     -- -- Iterate through incomplete tasks in Snacks_picker
     {
       -- -- You can confirm in your teminal lamw26wmal with:
-      '<leader>tt',
+      '<leader>ti',
       function()
         local root = Util.root.get()
         local exclude_dirs = {
@@ -118,11 +118,11 @@ return {
           layout = 'ivy_split',
         }
       end,
-      desc = '[P]Search for incomplete tasks',
+      desc = 'Search for incomplete tasks',
     },
     -- -- Iterate throuth completed tasks in Snacks_picker lamw26wmal
     {
-      '<leader>tc',
+      '<leader>tC',
       function()
         local root = Util.root.get()
         local exclude_dirs = {
@@ -157,7 +157,7 @@ return {
           layout = 'ivy',
         }
       end,
-      desc = '[P]Search for complete tasks',
+      desc = 'Search for complete tasks',
     },
   },
   init = function()

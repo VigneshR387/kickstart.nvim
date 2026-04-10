@@ -9,6 +9,7 @@ return {
     --  - Any `.todo` extension (can be ".todo" or ".todo.md")
     -- To activate Checkmate, the filename must match AND the filetype must be "markdown"
     files = {
+      '*.md',
       'todo',
       'TODO',
       'todo.md',
@@ -22,70 +23,80 @@ return {
     },
     -- Default keymappings
     keys = {
-      ['<leader>Tt'] = {
+      ['<leader>tt'] = {
         rhs = '<cmd>Checkmate toggle<CR>',
         desc = 'Toggle todo item',
         modes = { 'n', 'v' },
       },
-      ['<leader>Tc'] = {
+      ['<leader>tc'] = {
         rhs = '<cmd>Checkmate check<CR>',
         desc = 'Set todo item as checked (done)',
         modes = { 'n', 'v' },
       },
-      ['<leader>Tu'] = {
+      ['<leader>tu'] = {
         rhs = '<cmd>Checkmate uncheck<CR>',
         desc = 'Set todo item as unchecked (not done)',
         modes = { 'n', 'v' },
       },
-      ['<leader>T='] = {
+      ['<leader>t='] = {
         rhs = '<cmd>Checkmate cycle_next<CR>',
         desc = 'Cycle todo item(s) to the next state',
         modes = { 'n', 'v' },
       },
-      ['<leader>T-'] = {
+      ['<leader>t-'] = {
         rhs = '<cmd>Checkmate cycle_previous<CR>',
         desc = 'Cycle todo item(s) to the previous state',
         modes = { 'n', 'v' },
       },
-      ['<leader>Tn'] = {
+      ['<leader>tn'] = {
         rhs = '<cmd>Checkmate create<CR>',
         desc = 'Create todo item',
         modes = { 'n', 'v' },
       },
-      ['<leader>Tr'] = {
+      ['<leader>tr'] = {
         rhs = '<cmd>Checkmate remove<CR>',
         desc = 'Remove todo marker (convert to text)',
         modes = { 'n', 'v' },
       },
-      ['<leader>TR'] = {
+      ['<leader>tR'] = {
         rhs = '<cmd>Checkmate remove_all_metadata<CR>',
         desc = 'Remove all metadata from a todo item',
         modes = { 'n', 'v' },
       },
-      ['<leader>Ta'] = {
+      ['<leader>ta'] = {
         rhs = '<cmd>Checkmate archive<CR>',
         desc = 'Archive checked/completed todo items (move to bottom section)',
         modes = { 'n' },
       },
-      ['<leader>TF'] = {
+      ['<leader>tF'] = {
         rhs = '<cmd>Checkmate select_todo<CR>',
         desc = 'Open a picker to select a todo from the current buffer',
         modes = { 'n' },
       },
-      ['<leader>Tv'] = {
+      ['<leader>tv'] = {
         rhs = '<cmd>Checkmate metadata select_value<CR>',
         desc = 'Update the value of a metadata tag under the cursor',
         modes = { 'n' },
       },
-      ['<leader>T]'] = {
+      ['<leader>t]'] = {
         rhs = '<cmd>Checkmate metadata jump_next<CR>',
         desc = 'Move cursor to next metadata tag',
         modes = { 'n' },
       },
-      ['<leader>T['] = {
+      ['<leader>t['] = {
         rhs = '<cmd>Checkmate metadata jump_previous<CR>',
         desc = 'Move cursor to previous metadata tag',
         modes = { 'n' },
+      },
+      ['<M-x>'] = {
+        rhs = '<cmd>Checkmate metadata toggle done<CR>',
+        desc = 'Toggle Metadata @done',
+        modes = { 'n', 'v' },
+      },
+      ['<M-i>'] = {
+        rhs = '<cmd>Checkmate create<CR>',
+        desc = 'Create todo item',
+        modes = { 'n', 'v' },
       },
     },
     default_list_marker = '-',
@@ -94,14 +105,35 @@ return {
       -- we don't need to set the `markdown` field for `unchecked` and `checked` as these can't be overriden
       ---@diagnostic disable-next-line: missing-fields
       unchecked = {
+        -- marker = '[ ]',
         marker = '□',
         order = 1,
       },
       ---@diagnostic disable-next-line: missing-fields
       checked = {
+        -- marker = '[x]',
         marker = '✔',
         order = 2,
       },
+      -- Custom states
+      -- in_progress = {
+      --   marker = '◐',
+      --   markdown = '.', -- Saved as `- [.]`
+      --   type = 'incomplete', -- Counts as "not done"
+      --   order = 50,
+      -- },
+      -- cancelled = {
+      --   marker = '✗',
+      --   markdown = 'c', -- Saved as `- [c]`
+      --   type = 'complete', -- Counts as "done"
+      --   order = 2,
+      -- },
+      -- on_hold = {
+      --   marker = '⏸',
+      --   markdown = '/', -- Saved as `- [/]`
+      --   type = 'inactive', -- Ignored in counts
+      --   order = 100,
+      -- },
     },
     style = {}, -- override defaults
     enter_insert_after_new = true, -- Should enter INSERT mode after `:Checkmate create` (new todo)
@@ -154,7 +186,7 @@ return {
           return 'medium' -- Default priority
         end,
         choices = function() return { 'low', 'medium', 'high' } end,
-        key = '<leader>Tp',
+        key = '<leader>tp',
         sort_order = 10,
         jump_to_on_insert = 'value',
         select_on_insert = true,
@@ -164,7 +196,7 @@ return {
         aliases = { 'init' },
         style = { fg = '#9fd6d5' },
         get_value = function() return tostring(os.date '%m/%d/%y %H:%M') end,
-        key = '<leader>Ts',
+        key = '<leader>ts',
         sort_order = 20,
       },
       -- Example: A @done tag that also sets the todo item state when it is added and removed
@@ -172,7 +204,7 @@ return {
         aliases = { 'completed', 'finished' },
         style = { fg = '#96de7a' },
         get_value = function() return tostring(os.date '%m/%d/%y %H:%M') end,
-        key = '<leader>Td',
+        key = '<leader>td',
         on_add = function(todo) require('checkmate').set_todo_state(todo, 'checked') end,
         on_remove = function(todo) require('checkmate').set_todo_state(todo, 'unchecked') end,
         sort_order = 30,
@@ -180,7 +212,7 @@ return {
     },
     archive = {
       heading = {
-        title = 'Archive',
+        title = 'Completed',
         level = 2, -- e.g. ##
       },
       parent_spacing = 0, -- no extra lines between archived todos
