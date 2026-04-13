@@ -5,7 +5,7 @@ return {
     { '<leader>S', function() Snacks.scratch.select() end, desc = 'Select Scratch Buffer' },
     { '<leader>dps', function() Snacks.profiler.scratch() end, desc = 'Profiler Scratch Buffer' },
     {
-      '<leader>T.',
+      '<leader>t.',
       function()
         -- Can implement your own logic for saving files by cwd, project, git branch, etc.
         local data = vim.fn.stdpath 'data'
