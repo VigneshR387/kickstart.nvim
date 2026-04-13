@@ -31,6 +31,7 @@ return { -- Useful plugin to show you pending keybinds.
         { '<leader>mh', group = 'headings increase/decrease' },
         { '<leader>ml', group = 'links' },
         { '<leader>ms', group = 'spell' },
+        { '<leader>n', group = 'Neorg', icon = { cat = 'filetype', name = 'norg' } },
         { '<leader>o', group = 'overseer' },
         { '<leader>q', group = 'quit/session' },
         { '<leader>s', group = 'search' },
