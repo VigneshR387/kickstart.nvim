@@ -147,3 +147,14 @@ vim.api.nvim_create_autocmd('FileType', {
   pattern = 'markdown',
   callback = Util.markdown.set_markdown_folding,
 })
+
+-- Inject journal template to neorg files in journal folder
+
+local function is_buffer_empty() return vim.api.nvim_buf_line_count(0) == 1 and vim.api.nvim_buf_get_lines(0, 0, 1, false)[1] == '' end
+
+vim.api.nvim_create_autocmd({ 'BufReadPost', 'BufNewFile' }, {
+  pattern = '*.norg',
+  callback = function(args)
+    if is_buffer_empty() and string.find(args.file, '/journal/') then vim.schedule(function() vim.cmd 'Neorg templates load journal' end) end
+  end,
+})
