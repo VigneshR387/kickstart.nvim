@@ -62,7 +62,7 @@ return {
     image = {
       enabled = true,
       doc = {
-        enabled = true,
+        enabled = false,
         inline = false,
         -- render the image in a floating window
         -- only used if `opts.inline` is disabled

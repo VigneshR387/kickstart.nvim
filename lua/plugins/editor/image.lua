@@ -1,6 +1,6 @@
 return {
   '3rd/image.nvim',
-  enabled = false,
+  enabled = true,
   build = false,
   event = 'VeryLazy',
   opts = {
