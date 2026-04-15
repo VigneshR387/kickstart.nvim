@@ -6,6 +6,7 @@ return {
   dependencies = {
     'nvim-neorg/tree-sitter-norg',
     'nvim-neorg/tree-sitter-norg-meta',
+    { 'pysan3/neorg-templates', dependencies = { 'L3MON4D3/LuaSnip' } }, -- ADD THIS LINE
   },
   opts = {
     load = {
@@ -34,6 +35,10 @@ return {
           index = 'index.norg',
           default_workspace = 'my_ws',
         },
+      },
+      ['external.templates'] = {
+        default_subcommand = 'load', -- asks confirmation, or use "fload" to skip
+        templates_dir = vim.fn.stdpath 'config' .. '/templates/norg',
       },
     },
   },
