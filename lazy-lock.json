@@ -61,6 +61,7 @@
   "octo.nvim": { "branch": "master", "commit": "351b2922642c3ade27c1d13374c685d1d6ab27a9" },
   "one-small-step-for-vimkind": { "branch": "main", "commit": "1af6ffb9b5229a856e8090fa2f690e0931a5aace" },
   "overseer.nvim": { "branch": "master", "commit": "f818eefff81f4b12fb7cf236f1b6c16768a2fcbc" },
+  "paint.nvim": { "branch": "master", "commit": "6ba834dc159f4c9c3b8e7b09f8c36c1a63c0e9a9" },
   "pathlib.nvim": { "branch": "main", "commit": "57e5598af6fe253761c1b48e0b59b7cd6699e2c1" },
   "persistence.nvim": { "branch": "main", "commit": "b20b2a7887bd39c1a356980b45e03250f3dce49c" },
   "plenary.nvim": { "branch": "master", "commit": "74b06c6c75e4eeb3108ec01852001636d85a932b" },
