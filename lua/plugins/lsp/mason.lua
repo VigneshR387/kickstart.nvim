@@ -15,6 +15,7 @@ return {
           'basedpyright',
           'bash-language-server',
           'markdown-oxide',
+          'marksman',
           'harper-ls',
           'vtsls',
           'taplo',
