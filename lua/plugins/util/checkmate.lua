@@ -141,7 +141,7 @@ return {
       enabled = true,
       split_line = true,
       keys = {
-        ['<CR>'] = function()
+        ['<M-CR>'] = function()
           require('checkmate').create {
             position = 'below',
             indent = false,
