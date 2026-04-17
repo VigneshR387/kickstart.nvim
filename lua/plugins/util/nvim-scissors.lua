@@ -61,14 +61,6 @@ return {
       -- see https://github.com/folke/snacks.nvim/blob/main/docs/picker.md
     },
 
-    -- `none` writes as a minified json file using `vim.encode.json`.
-    -- `yq`/`jq` ensure formatted & sorted json files, which is relevant when
-    -- you version control your snippets. To use a custom formatter, set to a
-    -- list of strings, which will then be passed to `vim.system()`.
-    -- TIP: `jq` is already pre-installed on newer versions of macOS.
-    ---@type "yq"|"jq"|"none"|string[]
-    jsonFormatter = 'jq',
-
     backdrop = {
       enabled = true,
       blend = 50, -- between 0-100
