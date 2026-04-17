@@ -44,7 +44,7 @@ return {
       preview = {
         enable = true,
 
-        enable_hybrid_mode = true,
+        enable_hybrid_mode = false,
         -- `raw_preview` causes elements to render both raw text and rendered preview for elements not included in the list.
         --  issue: https://github.com/OXY2DEV/markview.nvim/issues/487
         -- raw_previews = {
