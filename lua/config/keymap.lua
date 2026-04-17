@@ -383,7 +383,8 @@ end, { ft = 'markdown', desc = '[P]Fold all headings level 4 or above' })
 
 -- Use <CR> to fold when in normal mode
 -- To see help about folds use `:help fold`
-map('n', '<CR>', function()
+-- Disabled bcs it conflicting with org-mode
+map('n', '<Tab>', function()
   -- Get the current line number
   local line = vim.fn.line '.'
   -- Get the fold level of the current line
