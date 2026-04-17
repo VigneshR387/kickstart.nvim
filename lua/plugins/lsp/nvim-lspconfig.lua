@@ -94,17 +94,19 @@ return {
       },
       basedpyright = {},
 
-      markdown_oxide = {
-        -- Ensure that dynamicRegistration is enabled
-        -- This allows the LS to take into account actions like Create Unresolved File, etc
-        capabilities = vim.tbl_deep_extend('force', vim.lsp.protocol.make_client_capabilities(), require('blink.cmp').get_lsp_capabilities(), {
-          workspace = {
-            didChangeWatchedFiles = {
-              dynamicRegistration = true,
-            },
-          },
-        }),
-      },
+      marksman = {},
+
+      -- markdown_oxide = {
+      --   -- Ensure that dynamicRegistration is enabled
+      --   -- This allows the LS to take into account actions like Create Unresolved File, etc
+      --   capabilities = vim.tbl_deep_extend('force', vim.lsp.protocol.make_client_capabilities(), require('blink.cmp').get_lsp_capabilities(), {
+      --     workspace = {
+      --       didChangeWatchedFiles = {
+      --         dynamicRegistration = true,
+      --       },
+      --     },
+      --   }),
+      -- },
 
       harper_ls = {
         enabled = true,
