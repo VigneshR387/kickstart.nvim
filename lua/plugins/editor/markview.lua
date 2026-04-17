@@ -41,17 +41,19 @@ return {
       },
     }
     require('markview').setup {
-      preview = {
-        enable = true,
-
-        enable_hybrid_mode = false,
-        -- `raw_preview` causes elements to render both raw text and rendered preview for elements not included in the list.
-        --  issue: https://github.com/OXY2DEV/markview.nvim/issues/487
-        -- raw_previews = {
-        --   markdown = { 'headings' },
-        -- },
-        hybrid_modes = { 'n' },
-      },
+      --NOTE: Disabling preview specs since  hybrid is already disabled due to the lag
+      -- preview = {
+      --   enable = true,
+      --
+      --   -- enable_hybrid_mode = false,
+      --   -- `raw_preview` causes elements to render both raw text and rendered preview for elements not included in the list.
+      --   --  issue: https://github.com/OXY2DEV/markview.nvim/issues/487
+      --   -- raw_previews = {
+      --   --   markdown = { 'headings' },
+      --   -- },
+      --   -- WARN: Setting hybrid_mode is causing huge lag while scrolling
+      --   -- hybrid_modes = { 'n' },
+      -- },
       markdown = {
         -- headings = presets.headings.glow_center,
 
