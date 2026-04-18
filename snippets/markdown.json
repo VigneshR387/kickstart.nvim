@@ -3,6 +3,14 @@
     "body": "- □ ${1:Task} @priority(${2:medium})",
     "prefix": ".task"
   },
+  "elisp": {
+    "body": [
+      "```elisp",
+      "${1:code}",
+      "```"
+    ],
+    "prefix": "elisp"
+  },
   "mdlink": {
     "body": "[${1:text}](${2:target})",
     "prefix": "mdlink"
