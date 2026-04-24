@@ -1,132 +1,65 @@
-local pick = function()
-  local refactoring = require 'refactoring'
-  if Util.pick.picker.name == 'telescope' then
-    return require('telescope').extensions.refactoring.refactors()
-  elseif Util.pick.picker.name == 'fzf' then
-    local fzf_lua = require 'fzf-lua'
-    local results = refactoring.get_refactors()
-
-    local opts = {
-      fzf_opts = {},
-      fzf_colors = true,
-      actions = {
-        ['default'] = function(selected) refactoring.refactor(selected[1]) end,
-      },
-    }
-    fzf_lua.fzf_exec(results, opts)
-  else
-    refactoring.select_refactor()
-  end
-end
-
 return {
+  { 'lewis6991/async.nvim', lazy = true },
+
   {
     'ThePrimeagen/refactoring.nvim',
     event = { 'BufReadPre', 'BufNewFile' },
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-treesitter/nvim-treesitter',
-    },
     keys = {
       { '<leader>r', '', desc = '+refactor', mode = { 'n', 'x' } },
       {
         '<leader>rs',
-        pick,
+        function() return require('refactoring').select_refactor() end,
         mode = { 'n', 'x' },
-        desc = 'Refactor',
+        desc = 'Select Refactor',
       },
       {
         '<leader>ri',
-        function() return require('refactoring').refactor 'Inline Variable' end,
+        function() return require('refactoring').inline_var() end,
         mode = { 'n', 'x' },
         desc = 'Inline Variable',
         expr = true,
       },
       {
-        '<leader>rb',
-        function() return require('refactoring').refactor 'Extract Block' end,
-        mode = { 'n', 'x' },
-        desc = 'Extract Block',
-        expr = true,
-      },
-      {
-        '<leader>rf',
-        function() return require('refactoring').refactor 'Extract Block To File' end,
-        mode = { 'n', 'x' },
-        desc = 'Extract Block To File',
-        expr = true,
-      },
-      {
         '<leader>rP',
-        function() require('refactoring').debug.printf { below = false } end,
-        desc = 'Debug Print',
+        function() return require('refactoring.debug').print_loc { output_location = 'below' } end,
+        desc = 'Debug Print Location',
+        expr = true,
       },
       {
         '<leader>rp',
-        function() require('refactoring').debug.print_var { normal = true } end,
+        function() return require('refactoring.debug').print_var { output_location = 'below' } .. 'iw' end,
         mode = { 'n', 'x' },
         desc = 'Debug Print Variable',
+        expr = true,
       },
       {
         '<leader>rc',
-        function() require('refactoring').debug.cleanup {} end,
+        function() return require('refactoring.debug').cleanup { restore_view = true } .. 'ag' end,
         desc = 'Debug Cleanup',
+        expr = true,
       },
       {
         '<leader>rf',
-        function() return require('refactoring').refactor 'Extract Function' end,
+        function() return require('refactoring').extract_func() end,
         mode = { 'n', 'x' },
         desc = 'Extract Function',
         expr = true,
       },
       {
         '<leader>rF',
-        function() return require('refactoring').refactor 'Extract Function To File' end,
+        function() return require('refactoring').extract_func_to_file() end,
         mode = { 'n', 'x' },
         desc = 'Extract Function To File',
         expr = true,
       },
       {
         '<leader>rx',
-        function() return require('refactoring').refactor 'Extract Variable' end,
+        function() return require('refactoring').extract_var() end,
         mode = { 'n', 'x' },
         desc = 'Extract Variable',
         expr = true,
       },
-      {
-        '<leader>rp',
-        function() require('refactoring').debug.print_var() end,
-        mode = { 'n', 'x' },
-        desc = 'Debug Print Variable',
-      },
     },
-    opts = {
-      prompt_func_return_type = {
-        go = false,
-        java = false,
-        cpp = false,
-        c = false,
-        h = false,
-        hpp = false,
-        cxx = false,
-      },
-      prompt_func_param_type = {
-        go = false,
-        java = false,
-        cpp = false,
-        c = false,
-        h = false,
-        hpp = false,
-        cxx = false,
-      },
-      printf_statements = {},
-      print_var_statements = {},
-      show_success_message = true, -- shows a message with information about the refactor on success
-      -- i.e. [Refactor] Inlined 3 variable occurrences
-    },
-    config = function(_, opts)
-      require('refactoring').setup(opts)
-      if Util.has 'telescope.nvim' then Util.on_load('telescope.nvim', function() require('telescope').load_extension 'refactoring' end) end
-    end,
+    opts = {},
   },
 }
