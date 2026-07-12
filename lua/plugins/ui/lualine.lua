@@ -100,6 +100,10 @@ return {
           { 'location', padding = { left = 0, right = 1 } },
         },
         lualine_z = {
+          {
+            -- Show the currently connected server and its status
+            require('opencode').statusline,
+          },
           function() return ' ' .. os.date '%R' end,
         },
       },

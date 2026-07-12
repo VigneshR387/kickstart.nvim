@@ -88,6 +88,9 @@ return { -- Autocompletion
     sources = {
       -- add lazydev to your completion providers
       default = { 'emoji', 'git', 'lazydev', 'lsp', 'path', 'snippets', 'buffer' },
+      per_filetype = {
+        opencode_ask = { 'lsp', 'buffer' },
+      },
       providers = {
         lazydev = {
           name = 'LazyDev',
@@ -124,6 +127,9 @@ return { -- Autocompletion
               vim.o.filetype
             )
           end,
+        },
+        lsp = {
+          fallbacks = {},
         },
       },
     },
