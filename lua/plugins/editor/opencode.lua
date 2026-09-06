@@ -4,13 +4,22 @@ return {
   config = function()
     ---@type opencode.Opts
     vim.g.opencode_opts = {
-      -- Your configuration, if any; goto definition on the type for details
+      ask = {
+        snacks = {
+          win = {
+            keys = {
+              ['<C-a>'] = function() require('opencode').command 'agent.cycle' end,
+            },
+          },
+        },
+      },
     }
 
     vim.o.autoread = true -- Required for `vim.g.opencode_opts.events.reload`
 
     -- Recommended/example keymaps
     vim.keymap.set({ 'n', 'x' }, '<leader>za', function() require('opencode').ask '@this: ' end, { desc = 'Ask OpenCode…' })
+    vim.keymap.set({ 'n', 'x' }, '<leader>zA', function() require('opencode').command 'agent.cycle' end, { desc = 'Cycle OpenCode Agent' })
     vim.keymap.set({ 'n', 'x' }, '<leader>zs', function() require('opencode').select() end, { desc = 'Select OpenCode…' })
 
     vim.keymap.set({ 'n', 'x' }, 'go', function() return require('opencode').operator '@this ' end, { desc = 'Append range to OpenCode', expr = true })
@@ -20,4 +29,3 @@ return {
     vim.keymap.set('n', '<S-C-d>', function() require('opencode').command 'session.half.page.down' end, { desc = 'Scroll OpenCode down' })
   end,
 }
-
