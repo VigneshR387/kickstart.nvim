@@ -19,6 +19,7 @@ return {
           'harper-ls',
           'vtsls',
           'taplo',
+          'roslyn-language-server',
           -- linters
           'eslint_d',
           'shellcheck',

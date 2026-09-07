@@ -11,6 +11,7 @@ return {
 
     -- This plugin streamlines Neovim's LSP setup by automating server installation and activation, providing helpful management commands, and mapping mason.nvim packages to nvim-lspconfig configurations.
     'mason-org/mason-lspconfig.nvim',
+    'saghen/blink.cmp',
   },
   event = { 'BufReadPre', 'BufNewFile' },
   config = function()
@@ -178,11 +179,15 @@ return {
           },
         },
       },
-      ['roslyn-language-server'] = {},
+      roslyn_ls = {},
     }
+    local capabilities = require('blink.cmp').get_lsp_capabilities()
     for name, server in pairs(servers) do
+      server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
       vim.lsp.config(name, server)
       vim.lsp.enable(name)
     end
+
+    Util.format.register(Util.lsp.formatter { filter = 'roslyn_ls' })
   end,
 }

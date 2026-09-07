@@ -27,6 +27,7 @@ return {
       ensure_installed = {
         'bash',
         'c',
+        'c_sharp',
         'diff',
         'git_config',
         'gitcommit',
